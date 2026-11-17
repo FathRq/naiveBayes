@@ -1,0 +1,50 @@
+=== 1. MEMBACA DATA + BANGUN FITUR ===
+Jumlah baris : 33776
+Peta indeks -> kategori:
+  0 -> hiburan
+  1 -> olahraga
+  2 -> politik
+  3 -> teknologi
+  4 -> ekonomi
+=== 2. TRAIN + PREDIKSI (model demonstrasi) ===
+======================================================================
+BUKTI: APA SAJA YANG DILIHAT MODEL?
+======================================================================
+[1] Kolom yang MASUK ke model NaiveBayes:
+      - fitur : vektor TF-IDF (hanya ANGKA, dibuat dari teks)
+      - label : indeks kategori (kunci jawaban)
+      -> Kolom 'kategori' (string) TIDAK ada di vektor fitur.
+[2] 1 BARIS CONTOH - alur lengkap dari teks sampai prediksi:
+  id_artikel : 4525309
+  (A) TEKS ASLI (teks_bersih, dipotong 120 karakter):
+        "apt rose blackpink menyamai rekor jungkook di tangga lagu billboard kolaborasi single apt rose blackpink dan bruno mars  ..."
+  (B) HASIL TOKENIZATION (20 kata pertama):
+        ['apt', 'rose', 'blackpink', 'menyamai', 'rekor', 'jungkook', 'di', 'tangga', 'lagu', 'billboard', 'kolaborasi', 'single', 'apt', 'rose', 'blackpink', 'dan', 'bruno', 'mars', 'tetap', 'menduduki']
+  (C) VEKTOR FITUR yang benar-benar dilihat model:
+        vektor SPARSE, 138 nilai non-nol (10 pertama):
+          indeks    436  ->  bobot TF-IDF 0.1109
+          indeks    674  ->  bobot TF-IDF 1.2794
+          indeks   1433  ->  bobot TF-IDF 4.9679
+          indeks   2081  ->  bobot TF-IDF 5.4647
+          indeks   2753  ->  bobot TF-IDF 10.9861
+          indeks   3142  ->  bobot TF-IDF 1.5493
+          indeks   4739  ->  bobot TF-IDF 2.5302
+          indeks   4956  ->  bobot TF-IDF 10.0678
+          indeks   5226  ->  bobot TF-IDF 2.1861
+          indeks   5734  ->  bobot TF-IDF 3.9429
+        ... semuanya ANGKA. Tidak ada string kategori di sini.
+  (D) LABEL / KUNCI JAWABAN:
+        indeks label = 0   ->   kategori = 'hiburan'
+  (E) PREDIKSI MODEL (ditebak HANYA dari vektor fitur):
+        indeks prediksi = 0   ->   kategori = 'hiburan'
+        BENAR? = True
+======================================================================
+KESIMPULAN
+======================================================================
+Model Naive Bayes HANYA melihat vektor ANGKA (TF-IDF) yang
+dihasilkan dari TEKS (judul + isi). Kolom 'kategori' hanya
+berfungsi sebagai LABEL (kunci jawaban) saat training & evaluasi.
+Kategori TIDAK pernah menjadi fitur  ->  TIDAK ADA data leakage.
+ANALOGI: belajar dari buku (soal + kunci jawaban), lalu ujian
+tanpa kunci. Skor ujian = akurasi. Kunci di buku tidak bocor
+ke jawabanmu - ia hanya dipakai mengoreksi setelah kamu menjawab.

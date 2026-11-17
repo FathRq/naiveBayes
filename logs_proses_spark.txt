@@ -1,0 +1,166 @@
+26/11/17 06:27:25 INFO SparkContext: Running Spark version 3.5.6
+26/11/17 06:27:25 INFO SparkContext: OS info Linux, 7.3.3-100.fc43.x86_64, amd64
+26/11/17 06:27:25 INFO SparkContext: Java version 11.0.27
+26/11/17 06:27:25 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/17 06:27:25 INFO ResourceUtils: ==============================================================
+26/11/17 06:27:25 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/17 06:27:25 INFO ResourceUtils: ==============================================================
+26/11/17 06:27:25 INFO SparkContext: Submitted application: BagianB_PengolahanAnalisisBeritaAntara
+26/11/17 06:27:25 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/17 06:27:25 INFO ResourceProfile: Limiting resource is cpu
+26/11/17 06:27:25 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/17 06:27:25 INFO SecurityManager: Changing view acls to: spark
+26/11/17 06:27:25 INFO SecurityManager: Changing modify acls to: spark
+26/11/17 06:27:25 INFO SecurityManager: Changing view acls groups to: 
+26/11/17 06:27:25 INFO SecurityManager: Changing modify acls groups to: 
+26/11/17 06:27:25 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/17 06:27:25 INFO Utils: Successfully started service 'sparkDriver' on port 43853.
+26/11/17 06:27:25 INFO SparkEnv: Registering MapOutputTracker
+26/11/17 06:27:25 INFO SparkEnv: Registering BlockManagerMaster
+26/11/17 06:27:25 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/17 06:27:25 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/17 06:27:25 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/17 06:27:25 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-8f242db4-8d68-46a5-b36b-34207e689371
+26/11/17 06:27:25 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/17 06:27:25 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/17 06:27:25 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/17 06:27:25 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/17 06:27:25 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/17 06:27:25 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.4:7077 after 27 ms (0 ms spent in bootstraps)
+26/11/17 06:27:26 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261117062726-0000
+26/11/17 06:27:26 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 39755.
+26/11/17 06:27:26 INFO NettyBlockTransferService: Server created on spark-master:39755
+26/11/17 06:27:26 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/17 06:27:26 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261117062726-0000/0 on worker-20261117062358-172.21.0.8-39425 (172.21.0.8:39425) with 2 core(s)
+26/11/17 06:27:26 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 39755, None)
+26/11/17 06:27:26 INFO StandaloneSchedulerBackend: Granted executor ID app-20261117062726-0000/0 on hostPort 172.21.0.8:39425 with 2 core(s), 1024.0 MiB RAM
+26/11/17 06:27:26 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261117062726-0000/1 on worker-20261117062358-172.21.0.5-39469 (172.21.0.5:39469) with 2 core(s)
+26/11/17 06:27:26 INFO StandaloneSchedulerBackend: Granted executor ID app-20261117062726-0000/1 on hostPort 172.21.0.5:39469 with 2 core(s), 1024.0 MiB RAM
+26/11/17 06:27:26 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:39755 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 39755, None)
+26/11/17 06:27:26 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 39755, None)
+26/11/17 06:27:26 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 39755, None)
+26/11/17 06:27:26 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261117062726-0000/0 is now RUNNING
+26/11/17 06:27:26 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261117062726-0000/1 is now RUNNING
+26/11/17 06:27:26 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA DATASET MENTAH DARI HDFS ===
+
+=== 2. STRUKTUR & JUMLAH BARIS AWAL ===
+root
+ |-- id_artikel: string (nullable = true)
+ |-- judul: string (nullable = true)
+ |-- ringkasan: string (nullable = true)
+ |-- isi_artikel: string (nullable = true)
+ |-- tanggal_publikasi: string (nullable = true)
+ |-- nama_media: string (nullable = true)
+ |-- kategori: string (nullable = true)
+ |-- url: string (nullable = true)
+ |-- waktu_diambil: string (nullable = true)
+
+Total baris mentah: 33830
+
+Jumlah nilai NULL per kolom (Sebelum Cleaning):
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+|id_artikel|judul|ringkasan|isi_artikel|tanggal_publikasi|nama_media|kategori|url|waktu_diambil|
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+|         0|    0|        0|          0|                0|         0|       0|  0|            0|
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+
+
+=== 3. PEMBERSIHAN DATA (DATA CLEANING) ===
+Total baris setelah dibersihkan : 33776
+Total baris rusak/duplikat dibuang: 54
+
+=== 4. TRANSFORMASI DATA ===
+Total baris final siap analisis & MLlib: 33776
++----------+--------+---------------+-----------+----------------------------------------+
+|id_artikel|kategori|tahun_publikasi|jumlah_kata|                             teks_bersih|
++----------+--------+---------------+-----------+----------------------------------------+
+|    605705| hiburan|           2017|        183|a man called ahok di mata dewi lestar...|
+|    692942| hiburan|           2018|          7|aroma karsa suguhan baru dari dewi le...|
+|    769183| hiburan|           2018|        348|bunga penutup abad pembuktian marsha ...|
+|   5233917|olahraga|           2025|        352|buzzer beater bane jadi penentu kemen...|
+|   4231323| hiburan|           2024|        181|bye bye bye kembali ke tangga lagu du...|
++----------+--------+---------------+-----------+----------------------------------------+
+only showing top 5 rows
+
+
+--- DIAGNOSTIC: jumlah NULL per kolom fitur ---
++-----+-----------+-------------------+-----------+
+|judul|isi_artikel|isi_tanpa_copyright|teks_bersih|
++-----+-----------+-------------------+-----------+
+|    0|          0|                  0|          0|
++-----+-----------+-------------------+-----------+
+
+
+--- DIAGNOSTIC: sampel teks_bersih non-NULL (verifikasi isi bermakna) ---
++----------+--------+-----------+--------------------------------------------------------------------------------+
+|id_artikel|kategori|jumlah_kata|                                                                     teks_bersih|
++----------+--------+-----------+--------------------------------------------------------------------------------+
+|    605705| hiburan|        183|a man called ahok di mata dewi lestari jakarta antara news bagi novelis dewi ...|
+|    692942| hiburan|          7|                                      aroma karsa suguhan baru dari dewi lestari|
+|    769183| hiburan|        348|bunga penutup abad pembuktian marsha timothy sebagai nyai ontosoroh jakarta a...|
+|   5233917|olahraga|        352|buzzer beater bane jadi penentu kemenangan magic atas trail blazers desmond b...|
+|   4231323| hiburan|        181|bye bye bye kembali ke tangga lagu dua dekade lebih setelah dirilis film dead...|
++----------+--------+-----------+--------------------------------------------------------------------------------+
+only showing top 5 rows
+
+Data bersih berhasil disimpan ke HDFS: /proyek_bigdata/clean/berita_clean.parquet
+
+=== 5. HASIL ANALISIS DATA (MINIMAL 3 ANALISIS) ===
+
+[Analisis 1] Distribusi Jumlah Berita per Kategori (DataFrame API):
++---------+------------+
+|kategori |total_berita|
++---------+------------+
+|olahraga |6766        |
+|hiburan  |6766        |
+|teknologi|6764        |
+|politik  |6764        |
+|ekonomi  |6716        |
++---------+------------+
+
+
+[Analisis 2] Statistik Panjang Kata per Kategori (Spark SQL):
++---------+--------------+--------------+--------+--------+
+|kategori |jumlah_artikel|rata_rata_kata|min_kata|max_kata|
++---------+--------------+--------------+--------+--------+
+|politik  |6764          |296.36        |39      |385     |
+|hiburan  |6766          |285.59        |5       |454     |
+|teknologi|6764          |284.98        |4       |396     |
+|olahraga |6766          |277.85        |15      |389     |
+|ekonomi  |6716          |271.56        |8       |381     |
++---------+--------------+--------------+--------+--------+
+
+
+[Analisis 3] Distribusi Publikasi Berita per Tahun (Spark SQL):
++---------------+-------------+--------------+
+|tahun_publikasi|total_artikel|rata_rata_kata|
++---------------+-------------+--------------+
+|2026           |20910        |289.11        |
+|2025           |3341         |280.32        |
+|2024           |1933         |278.21        |
+|2023           |1437         |284.48        |
+|2022           |787          |263.37        |
+|2021           |78           |243.59        |
+|2019           |1124         |247.22        |
+|2018           |1591         |264.31        |
+|2017           |904          |271.06        |
+|2016           |752          |281.93        |
+|2015           |333          |282.21        |
+|2014           |390          |286.43        |
+|2013           |196          |267.61        |
++---------------+-------------+--------------+
+
+
+[Analisis 4] Jumlah Artikel Mendalam (> 300 Kata) per Kategori (Spark SQL):
++---------+----------------+
+|kategori |artikel_mendalam|
++---------+----------------+
+|politik  |4007            |
+|teknologi|3640            |
+|hiburan  |3556            |
+|ekonomi  |3534            |
+|olahraga |2661            |
++---------+----------------+
+

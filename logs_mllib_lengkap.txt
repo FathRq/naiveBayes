@@ -1,0 +1,265 @@
+=== 1. MEMBACA DATA ===
+Total baris (raw) : 33776
+=== 2. SKENARIO A: RAW (tanpa dedup) ===
+--- Skenario: RAW ---
+  baris train=27220  test=6556  accuracy=0.9169
+  Prediksi RAW disimpan : hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi.parquet
+=== 3. SKENARIO B: DEDUP (buang near-duplikat) ===
+Total baris (dedup) : 33555  (dibuang 221 near-duplikat)
+--- Skenario: DEDUP ---
+  baris train=27034  test=6521  accuracy=0.9127
+  Prediksi DEDUP disimpan: hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi_dedup.parquet
+  Model DEDUP disimpan   : hdfs://namenode:9000/proyek_bigdata/model/naive_bayes_model
+=== 4. PERBANDINGAN RAW vs DEDUP ===
+  RAW   : 91.69%
+  DEDUP : 91.27%
+  Selisih: 0.42 poin
+  -> Selisih < 1%: akurasi TIDAK tergelembung oleh near-duplikat; angka DEDUP sah sebagai angka resmi (bebas-leakage).
+=== 5. BANGUN DOKUMEN JSON ===
+{
+  "proyek": {
+    "judul": "Klasifikasi Berita Indonesia Menggunakan Naive Bayes pada Spark MLlib",
+    "topik": "Klasifikasi berita Indonesia (Topik 4)",
+    "algoritma": "Naive Bayes (multinomial)",
+    "sumber": "Spark MLlib",
+    "arsitektur": "HDFS -> Spark -> Spark MLlib -> Evaluasi -> NoSQL (MongoDB)"
+  },
+  "dataset": {
+    "nama_file": "berita_antara_final.csv",
+    "sumber": "ANTARA News",
+    "total_baris_raw": 33776,
+    "total_baris_dedup": 33555,
+    "near_duplikat_dibuang": 221,
+    "kategori": [
+      "hiburan",
+      "olahraga",
+      "teknologi",
+      "politik",
+      "ekonomi"
+    ],
+    "keseimbangan_kelas": {
+      "teknologi": 6763,
+      "olahraga": 6766,
+      "hiburan": 6766,
+      "ekonomi": 6498,
+      "politik": 6762
+    }
+  },
+  "model": {
+    "nama": "Naive Bayes",
+    "tipe": "multinomial",
+    "parameter": {
+      "smoothing": 1.0,
+      "modelType": "multinomial"
+    },
+    "fitur": "TF-IDF: Tokenizer -> HashingTF(100000) -> IDF",
+    "fitur_dari": "teks_bersih (judul + isi)",
+    "catatan": "Model dilatih dari nol (fit); 100% parameter default, tanpa tuning"
+  },
+  "eksperimen": {
+    "skenario": "RAW vs DEDUP (uji kebocoran near-duplikat)",
+    "raw": {
+      "total_baris": 33776,
+      "split": {
+        "train": 27220,
+        "test": 6556,
+        "seed": 42
+      },
+      "evaluasi": {
+        "accuracy": 0.9169,
+        "weighted_precision": 0.9182,
+        "weighted_recall": 0.9169,
+        "weighted_f1": 0.917
+      },
+      "metrik_per_kategori": [
+        {
+          "kategori": "olahraga",
+          "precision": 0.9944,
+          "recall": 0.9751,
+          "f1": 0.9847
+        },
+        {
+          "kategori": "hiburan",
+          "precision": 0.917,
+          "recall": 0.9436,
+          "f1": 0.9301
+        },
+        {
+          "kategori": "teknologi",
+          "precision": 0.9386,
+          "recall": 0.8599,
+          "f1": 0.8975
+        },
+        {
+          "kategori": "ekonomi",
+          "precision": 0.8824,
+          "recall": 0.8982,
+          "f1": 0.8902
+        },
+        {
+          "kategori": "politik",
+          "precision": 0.8635,
+          "recall": 0.9074,
+          "f1": 0.8849
+        }
+      ],
+      "confusion_matrix": {
+        "keterangan": "baris=sebenarnya, kolom=prediksi",
+        "label": [
+          "hiburan",
+          "olahraga",
+          "politik",
+          "teknologi",
+          "ekonomi"
+        ],
+        "matriks": [
+          [
+            1238,
+            3,
+            28,
+            28,
+            15
+          ],
+          [
+            15,
+            1253,
+            15,
+            1,
+            1
+          ],
+          [
+            21,
+            3,
+            1234,
+            23,
+            79
+          ],
+          [
+            52,
+            0,
+            60,
+            1086,
+            65
+          ],
+          [
+            24,
+            1,
+            92,
+            19,
+            1200
+          ]
+        ]
+      }
+    },
+    "dedup": {
+      "total_baris": 33555,
+      "near_duplikat_dibuang": 221,
+      "split": {
+        "train": 27034,
+        "test": 6521,
+        "seed": 42
+      },
+      "evaluasi": {
+        "accuracy": 0.9127,
+        "weighted_precision": 0.9138,
+        "weighted_recall": 0.9127,
+        "weighted_f1": 0.9128
+      },
+      "metrik_per_kategori": [
+        {
+          "kategori": "olahraga",
+          "precision": 0.9953,
+          "recall": 0.9808,
+          "f1": 0.988
+        },
+        {
+          "kategori": "hiburan",
+          "precision": 0.9164,
+          "recall": 0.9393,
+          "f1": 0.9277
+        },
+        {
+          "kategori": "teknologi",
+          "precision": 0.925,
+          "recall": 0.8519,
+          "f1": 0.8869
+        },
+        {
+          "kategori": "ekonomi",
+          "precision": 0.8675,
+          "recall": 0.8965,
+          "f1": 0.8817
+        },
+        {
+          "kategori": "politik",
+          "precision": 0.8646,
+          "recall": 0.8949,
+          "f1": 0.8795
+        }
+      ],
+      "confusion_matrix": {
+        "keterangan": "baris=sebenarnya, kolom=prediksi",
+        "label": [
+          "hiburan",
+          "olahraga",
+          "teknologi",
+          "politik",
+          "ekonomi"
+        ],
+        "matriks": [
+          [
+            1238,
+            0,
+            43,
+            22,
+            15
+          ],
+          [
+            11,
+            1277,
+            3,
+            10,
+            1
+          ],
+          [
+            54,
+            1,
+            1110,
+            69,
+            69
+          ],
+          [
+            26,
+            3,
+            18,
+            1175,
+            91
+          ],
+          [
+            22,
+            2,
+            26,
+            83,
+            1152
+          ]
+        ]
+      }
+    },
+    "perbandingan": {
+      "selisih_accuracy": 0.0042,
+      "kesimpulan": "Selisih < 1%: akurasi TIDAK tergelembung oleh near-duplikat; angka DEDUP sah sebagai angka resmi (bebas-leakage)."
+    }
+  },
+  "interpretasi": {
+    "ringkasan": "Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.27% pada 6521 artikel uji (skenario DEDUP, bebas-leakage). Kategori 'olahraga' terklasifikasi paling baik (F1=0.988), sedangkan 'politik' paling menantang (F1=0.8795). Kesalahan terbesar: berita 'politik' ditebak 'ekonomi' (91 artikel), yang masuk akal karena kedua topik sering beririsan.",
+    "kategori_terkuat": "olahraga",
+    "kategori_terlemah": "politik",
+    "paling_sering_salah": "politik -> ekonomi (91 artikel)"
+  }
+}
+=== 6. SIMPAN ===
+[1] File lokal : /data/analisis/ringkasan_analisis.json
+[2] HDFS     : hdfs://namenode:9000/proyek_bigdata/analisis/ringkasan_analisis.json
+[3] MongoDB  : proyek_bigdata.ringkasan_analisis  (1 dokumen)
+    Verifikasi: accuracy_dedup=0.9127, selisih=0.0042
+Selesai. Eksperimen RAW+DEDUP + JSON ringkasan analisis berhasil.

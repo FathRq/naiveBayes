@@ -1,0 +1,180 @@
+=== 1. MEMBACA + DEDUP ===
+Sebelum dedup : 33776
+Setelah dedup : 33555  (dibuang 221 near-duplikat)
+Keseimbangan kelas: {'ekonomi': 6498, 'hiburan': 6766, 'olahraga': 6766, 'politik': 6762, 'teknologi': 6763}
+=== 2. EKSTRAKSI FITUR (TF-IDF) ===
+Peta indeks -> kategori:
+  0 -> hiburan
+  1 -> olahraga
+  2 -> teknologi
+  3 -> politik
+  4 -> ekonomi
+=== 3. SPLIT 80/20 (seed=42) + TRAIN + PREDIKSI ===
+Baris train : 27034
+Baris test  : 6521
+Prediksi dedup disimpan ke: hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi_dedup.parquet
+=== 4. EVALUASI ===
+[Accuracy] : 0.9127  (91.27%)
+  weightedPrecision : 0.9138
+  weightedRecall    : 0.9127
+  weightedFMeasure  : 0.9128
+[Metrik per kategori]:
+  olahraga      P=0.9953  R=0.9808  F1=0.9880
+  hiburan       P=0.9164  R=0.9393  F1=0.9277
+  teknologi     P=0.9250  R=0.8519  F1=0.8869
+  ekonomi       P=0.8675  R=0.8965  F1=0.8817
+  politik       P=0.8646  R=0.8949  F1=0.8795
+=== 5. INTERPRETASI ===
+Terkuat             : olahraga  (F1=0.988)
+Terlemah            : politik  (F1=0.8795)
+Paling sering salah : politik -> ekonomi  (91 artikel)
+=== 6. BANGUN DOKUMEN JSON ===
+Dokumen JSON (ringkasan analisis):
+{
+  "proyek": {
+    "judul": "Klasifikasi Berita Indonesia Menggunakan Naive Bayes pada Spark MLlib",
+    "topik": "Klasifikasi berita Indonesia (Topik 4)",
+    "algoritma": "Naive Bayes (multinomial)",
+    "sumber": "Spark MLlib",
+    "arsitektur": "HDFS -> Spark -> Spark MLlib -> Evaluasi -> NoSQL (MongoDB)"
+  },
+  "dataset": {
+    "nama_file": "berita_antara_final.csv",
+    "sumber": "ANTARA News",
+    "total_baris_raw": 33776,
+    "total_baris_dedup": 33555,
+    "near_duplikat_dibuang": 221,
+    "kategori": [
+      "hiburan",
+      "olahraga",
+      "teknologi",
+      "politik",
+      "ekonomi"
+    ],
+    "keseimbangan_kelas": {
+      "ekonomi": 6498,
+      "hiburan": 6766,
+      "olahraga": 6766,
+      "politik": 6762,
+      "teknologi": 6763
+    }
+  },
+  "model": {
+    "nama": "Naive Bayes",
+    "tipe": "multinomial",
+    "parameter": {
+      "smoothing": 1.0,
+      "modelType": "multinomial"
+    },
+    "fitur": "TF-IDF: Tokenizer -> HashingTF(100000) -> IDF",
+    "fitur_dari": "teks_bersih (judul + isi)",
+    "catatan": "Model dilatih dari nol (fit) pada data latih; 100% parameter default, tanpa tuning"
+  },
+  "split": {
+    "train_ratio": 0.8,
+    "test_ratio": 0.2,
+    "seed": 42,
+    "baris_train": 27034,
+    "baris_test": 6521
+  },
+  "evaluasi": {
+    "accuracy": 0.9127,
+    "weighted_precision": 0.9138,
+    "weighted_recall": 0.9127,
+    "weighted_f1": 0.9128
+  },
+  "metrik_per_kategori": [
+    {
+      "kategori": "olahraga",
+      "precision": 0.9953,
+      "recall": 0.9808,
+      "f1": 0.988
+    },
+    {
+      "kategori": "hiburan",
+      "precision": 0.9164,
+      "recall": 0.9393,
+      "f1": 0.9277
+    },
+    {
+      "kategori": "teknologi",
+      "precision": 0.925,
+      "recall": 0.8519,
+      "f1": 0.8869
+    },
+    {
+      "kategori": "ekonomi",
+      "precision": 0.8675,
+      "recall": 0.8965,
+      "f1": 0.8817
+    },
+    {
+      "kategori": "politik",
+      "precision": 0.8646,
+      "recall": 0.8949,
+      "f1": 0.8795
+    }
+  ],
+  "confusion_matrix": {
+    "keterangan": "baris = label sebenarnya, kolom = prediksi",
+    "label": [
+      "hiburan",
+      "olahraga",
+      "teknologi",
+      "politik",
+      "ekonomi"
+    ],
+    "matriks": [
+      [
+        1238,
+        0,
+        43,
+        22,
+        15
+      ],
+      [
+        11,
+        1277,
+        3,
+        10,
+        1
+      ],
+      [
+        54,
+        1,
+        1110,
+        69,
+        69
+      ],
+      [
+        26,
+        3,
+        18,
+        1175,
+        91
+      ],
+      [
+        22,
+        2,
+        26,
+        83,
+        1152
+      ]
+    ]
+  },
+  "interpretasi": {
+    "ringkasan": "Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.27% pada 6521 artikel uji. Kategori 'olahraga' terklasifikasi paling baik (F1=0.988), sedangkan 'politik' paling menantang (F1=0.8795). Kesalahan terbesar terjadi ketika berita 'politik' ditebak sebagai 'ekonomi' (91 artikel), yang masuk akal karena kedua topik sering membahas hal yang beririsan.",
+    "kategori_terkuat": "olahraga",
+    "kategori_terlemah": "politik",
+    "paling_sering_salah": "politik -> ekonomi (91 artikel)"
+  }
+}
+=== 7. SIMPAN ===
+[1] File lokal : /data/analisis/ringkasan_analisis.json
+[2] HDFS     : hdfs://namenode:9000/proyek_bigdata/analisis/ringkasan_analisis.json
+[3] MongoDB  : proyek_bigdata.ringkasan_analisis  (1 dokumen)
+    Verifikasi (baca kembali) - field evaluasi:
+      accuracy          = 0.9127
+      weighted_f1       = 0.9128
+      kategori_terkuat  = olahraga
+Selesai. Ringkasan analisis berhasil di-generate & disimpan.

@@ -1,0 +1,395 @@
+PS C:\Tugas krisna\big_data> cd UAS
+PS C:\Tugas krisna\big_data\UAS> hdfs dfs -mkdir -p /proyek_bigdata/raw
+hdfs : The term 'hdfs' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ hdfs dfs -mkdir -p /proyek_bigdata/raw
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (hdfs:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+PS C:\Tugas krisna\big_data\UAS> docker ps
+CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES
+PS C:\Tugas krisna\big_data\UAS> docker compose up -d
+time="2026-11-15T03:18:41+07:00" level=warning msg="C:\\Tugas krisna\\big_data\\UAS\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] up 12/12
+ ✔ Network uas_bigdata-net     Created                                                                                                                                                                                                                                0.1s
+ ✔ Volume uas_hadoop_namenode  Created                                                                                                                                                                                                                                0.0s
+ ✔ Volume uas_hadoop_datanode1 Created                                                                                                                                                                                                                                0.0s
+ ✔ Volume uas_hadoop_datanode2 Created                                                                                                                                                                                                                                0.0s
+ ✔ Volume uas_mongodb_data     Created                                                                                                                                                                                                                                0.0s
+ ✔ Container namenode          Started                                                                                                                                                                                                                                3.2s
+ ✔ Container mongodb-uas       Started                                                                                                                                                                                                                                2.8s
+ ✔ Container spark-master      Started                                                                                                                                                                                                                                3.1s
+ ✔ Container datanode1         Started                                                                                                                                                                                                                                4.1s
+ ✔ Container datanode2         Started                                                                                                                                                                                                                                4.0s
+ ✔ Container spark-worker-1    Started                                                                                                                                                                                                                                4.0s
+ ✔ Container spark-worker-2    Started                                                                                                                                                                                                                                3.9s
+
+What's next:
+    Filter, search, and stream logs from all your Compose services
+    in one place with Docker Desktop's Logs view. docker-desktop://dashboard/logs
+PS C:\Tugas krisna\big_data\UAS> docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS         PORTS                                                                                                                                   NAMES
+05afc88316e3   apache/spark:3.5.6    "/opt/entrypoint.sh …"   11 seconds ago   Up 8 seconds   0.0.0.0:8081->8081/tcp, [::]:8081->8081/tcp                                                                                             spark-worker-1
+14ce1fa4ff97   apache/spark:3.5.6    "/opt/entrypoint.sh …"   11 seconds ago   Up 8 seconds   0.0.0.0:8082->8081/tcp, [::]:8082->8081/tcp                                                                                             spark-worker-2
+e749efb0b17d   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   11 seconds ago   Up 8 seconds                                                                                                                                           datanode1
+5e399336107a   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   11 seconds ago   Up 8 seconds                                                                                                                                           datanode2
+3da1e7f6044e   mongo:8               "docker-entrypoint.s…"   11 seconds ago   Up 9 seconds   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp                                                                                         mongodb-uas
+23c546aad46d   apache/spark:3.5.6    "/opt/entrypoint.sh …"   11 seconds ago   Up 9 seconds   0.0.0.0:4040->4040/tcp, [::]:4040->4040/tcp, 0.0.0.0:7077->7077/tcp, [::]:7077->7077/tcp, 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   spark-master
+bc0804c2b44b   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   11 seconds ago   Up 9 seconds   0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp                                                namenode
+PS C:\Tugas krisna\big_data\UAS> hdfs dfs -mkdir -p /proyek_bigdata/raw
+hdfs : The term 'hdfs' is not recognized as the name of a cmdlet, function, script file, or operable program. Check the spelling of the name, or if a path was included, verify that the path is correct and try again.
+At line:1 char:1
++ hdfs dfs -mkdir -p /proyek_bigdata/raw
++ ~~~~
+    + CategoryInfo          : ObjectNotFound: (hdfs:String) [], CommandNotFoundException
+    + FullyQualifiedErrorId : CommandNotFoundException
+ 
+PS C:\Tugas krisna\big_data\UAS> docker cp "C:\Tugas krisna\big_data\UAS\berita_antara_final.csv" namenode:/tmp/dataset.csv
+Successfully copied 86.6MB (transferred 86.6MB) to namenode:/tmp/dataset.csv
+PS C:\Tugas krisna\big_data\UAS> docker exec namenode hdfs dfs -mkdir -p /proyek_bigdata/raw
+Error response from daemon: container bc0804c2b44bb467fa9b8e73afb80be8f7bda499d5f50e4af0141363816d2320 is not running
+PS C:\Tugas krisna\big_data\UAS> docker compose run --rm namenode hdfs namenode -format -force
+time="2026-11-15T03:33:37+07:00" level=warning msg="C:\\Tugas krisna\\big_data\\UAS\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+Container uas-namenode-run-a2647431fd56 Creating 
+Container uas-namenode-run-a2647431fd56 Created 
+2026-11-14 20:33:41 INFO  NameNode:809 - STARTUP_MSG: 
+/************************************************************
+STARTUP_MSG: Starting NameNode
+STARTUP_MSG:   host = namenode/172.20.0.4
+STARTUP_MSG:   args = [-format, -force]
+STARTUP_MSG:   version = 3.4.3
+STARTUP_MSG:   classpath = /opt/hadoop/etc/hadoop:/opt/hadoop/share/hadoop/common/lib/netty-codec-smtp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/kerby-asn1-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/jetty-servlet-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/jetty-xml-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/gson-2.9.0.jar:/opt/hadoop/share/hadoop/common/lib/commons-text-1.14.0.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-epoll-4.1.127.Final-linux-aarch_64.jar:/opt/hadoop/share/hadoop/common/lib/kerb-core-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/metrics-core-3.2.4.jar:/opt/hadoop/share/hadoop/common/lib/bcprov-jdk18on-1.82.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-unix-common-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jaxb-api-2.2.11.jar:/opt/hadoop/share/hadoop/common/lib/snappy-java-1.1.10.4.jar:/opt/hadoop/share/hadoop/common/lib/kerb-crypto-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/netty-handler-ssl-ocsp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-resolver-dns-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-aws-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/netty-resolver-dns-native-macos-4.1.127.Final-osx-x86_64.jar:/opt/hadoop/share/hadoop/common/lib/kerby-util-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/httpcore-4.4.13.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-classes-epoll-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-udt-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-shaded-protobuf_3_25-1.5.0.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-kqueue-4.1.127.Final-osx-x86_64.jar:/opt/hadoop/share/hadoop/common/lib/curator-framework-5.2.0.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-azure-datalake-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/netty-resolver-dns-native-macos-4.1.127.Final-osx-aarch_64.jar:/opt/hadoop/share/hadoop/common/lib/netty-all-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jersey-servlet-1.19.4.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-stomp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jackson-annotations-2.12.7.jar:/opt/hadoop/share/hadoop/common/lib/azure-keyvault-core-1.0.0.jar:/opt/hadoop/share/hadoop/common/lib/jsp-api-2.1.jar:/opt/hadoop/share/hadoop/common/lib/javax.servlet-api-3.1.0.jar:/opt/hadoop/share/hadoop/common/lib/jersey-server-1.19.4.jar:/opt/hadoop/share/hadoop/common/lib/dnsjava-3.6.1.jar:/opt/hadoop/share/hadoop/common/lib/kerby-config-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/curator-client-5.2.0.jar:/opt/hadoop/share/hadoop/common/lib/re2j-1.1.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-epoll-4.1.127.Final-linux-riscv64.jar:/opt/hadoop/share/hadoop/common/lib/commons-daemon-1.0.13.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-annotations-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/kerby-pkix-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/commons-logging-1.3.0.jar:/opt/hadoop/share/hadoop/common/lib/failureaccess-1.0.1.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jsr311-api-1.1.1.jar:/opt/hadoop/share/hadoop/common/lib/commons-codec-1.15.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-rxtx-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/woodstox-core-5.4.0.jar:/opt/hadoop/share/hadoop/common/lib/netty-handler-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/avro-1.11.4.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-epoll-4.1.127.Final-linux-x86_64.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-huaweicloud-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/jetty-server-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/slf4j-api-1.7.36.jar:/opt/hadoop/share/hadoop/common/lib/netty-handler-proxy-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-classes-kqueue-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-memcache-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-resolver-dns-classes-macos-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-http-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-kqueue-4.1.127.Final-osx-aarch_64.jar:/opt/hadoop/share/hadoop/common/lib/slf4j-reload4j-1.7.36.jar:/opt/hadoop/share/hadoop/common/lib/curator-recipes-5.2.0.jar:/opt/hadoop/share/hadoop/common/lib/jetty-http-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-redis-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/commons-io-2.16.1.jar:/opt/hadoop/share/hadoop/common/lib/jsch-0.1.55.jar:/opt/hadoop/share/hadoop/common/lib/jackson-core-2.12.7.jar:/opt/hadoop/share/hadoop/common/lib/zookeeper-jute-3.8.4.jar:/opt/hadoop/share/hadoop/common/lib/httpclient-4.5.13.jar:/opt/hadoop/share/hadoop/common/lib/commons-lang3-3.18.0.jar:/opt/hadoop/share/hadoop/common/lib/jersey-core-1.19.4.jar:/opt/hadoop/share/hadoop/common/lib/jackson-databind-2.12.7.1.jar:/opt/hadoop/share/hadoop/common/lib/jetty-security-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/netty-buffer-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/commons-compress-1.26.1.jar:/opt/hadoop/share/hadoop/common/lib/commons-math3-3.6.1.jar:/opt/hadoop/share/hadoop/common/lib/commons-cli-1.9.0.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-auth-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/commons-collections4-4.4.jar:/opt/hadoop/share/hadoop/common/lib/jetty-io-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/commons-configuration2-2.10.1.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-cos-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/jetty-util-ajax-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-socks-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/guava-32.0.1-jre.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-http2-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jul-to-slf4j-1.7.36.jar:/opt/hadoop/share/hadoop/common/lib/jsr305-3.0.2.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-dns-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-common-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jersey-json-1.22.0.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-xml-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jetty-util-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/jaxb-impl-2.2.3-1.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-shaded-guava-1.5.0.jar:/opt/hadoop/share/hadoop/common/lib/hadoop-azure-3.4.3.jar:/opt/hadoop/share/hadoop/common/lib/j2objc-annotations-2.8.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-sctp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-mqtt-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/reload4j-1.2.22.jar:/opt/hadoop/share/hadoop/common/lib/jettison-1.5.4.jar:/opt/hadoop/share/hadoop/common/lib/azure-storage-7.0.1.jar:/opt/hadoop/share/hadoop/common/lib/netty-transport-native-epoll-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/audience-annotations-0.12.0.jar:/opt/hadoop/share/hadoop/common/lib/checker-qual-3.33.0.jar:/opt/hadoop/share/hadoop/common/lib/zookeeper-3.8.4.jar:/opt/hadoop/share/hadoop/common/lib/analyticsaccelerator-s3-1.3.1.jar:/opt/hadoop/share/hadoop/common/lib/commons-net-3.9.0.jar:/opt/hadoop/share/hadoop/common/lib/wildfly-openssl-2.2.5.Final.jar:/opt/hadoop/share/hadoop/common/lib/kerb-util-2.0.3.jar:/opt/hadoop/share/hadoop/common/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/opt/hadoop/share/hadoop/common/lib/jakarta.activation-api-1.2.1.jar:/opt/hadoop/share/hadoop/common/lib/nimbus-jose-jwt-10.4.jar:/opt/hadoop/share/hadoop/common/lib/stax2-api-4.2.1.jar:/opt/hadoop/share/hadoop/common/lib/netty-codec-haproxy-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/lib/jetty-webapp-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/common/lib/netty-resolver-4.1.127.Final.jar:/opt/hadoop/share/hadoop/common/hadoop-common-3.4.3-tests.jar:/opt/hadoop/share/hadoop/common/hadoop-common-3.4.3.jar:/opt/hadoop/share/hadoop/common/hadoop-registry-3.4.3.jar:/opt/hadoop/share/hadoop/common/hadoop-kms-3.4.3.jar:/opt/hadoop/share/hadoop/common/hadoop-nfs-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-smtp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerby-asn1-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-servlet-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-xml-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/gson-2.9.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-text-1.14.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-epoll-4.1.127.Final-linux-aarch_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerb-core-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/metrics-core-3.2.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/HikariCP-4.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-unix-common-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jaxb-api-2.2.11.jar:/opt/hadoop/share/hadoop/hdfs/lib/snappy-java-1.1.10.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerb-crypto-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-handler-ssl-ocsp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-resolver-dns-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-resolver-dns-native-macos-4.1.127.Final-osx-x86_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerby-util-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/httpcore-4.4.13.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-classes-epoll-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-udt-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/hadoop-shaded-protobuf_3_25-1.5.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-kqueue-4.1.127.Final-osx-x86_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/curator-framework-5.2.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-resolver-dns-native-macos-4.1.127.Final-osx-aarch_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-all-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jersey-servlet-1.19.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-stomp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jackson-annotations-2.12.7.jar:/opt/hadoop/share/hadoop/hdfs/lib/javax.servlet-api-3.1.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/jersey-server-1.19.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/dnsjava-3.6.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerby-config-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/curator-client-5.2.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/re2j-1.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-epoll-4.1.127.Final-linux-riscv64.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-daemon-1.0.13.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/hadoop-annotations-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerby-pkix-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-logging-1.3.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/failureaccess-1.0.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jsr311-api-1.1.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-codec-1.15.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-rxtx-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/woodstox-core-5.4.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-handler-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/avro-1.11.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-epoll-4.1.127.Final-linux-x86_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-server-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-handler-proxy-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-classes-kqueue-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/json-simple-1.1.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-memcache-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-resolver-dns-classes-macos-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-http-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-kqueue-4.1.127.Final-osx-aarch_64.jar:/opt/hadoop/share/hadoop/hdfs/lib/curator-recipes-5.2.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-http-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-redis-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-io-2.16.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/jsch-0.1.55.jar:/opt/hadoop/share/hadoop/hdfs/lib/jackson-core-2.12.7.jar:/opt/hadoop/share/hadoop/hdfs/lib/zookeeper-jute-3.8.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/httpclient-4.5.13.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-lang3-3.18.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/jersey-core-1.19.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/jackson-databind-2.12.7.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-security-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-buffer-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-compress-1.26.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-math3-3.6.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-cli-1.9.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/hadoop-auth-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-collections4-4.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-io-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-configuration2-2.10.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-util-ajax-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-socks-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/guava-32.0.1-jre.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-http2-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jsr305-3.0.2.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-dns-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-common-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jersey-json-1.22.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-xml-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-util-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/jaxb-impl-2.2.3-1.jar:/opt/hadoop/share/hadoop/hdfs/lib/hadoop-shaded-guava-1.5.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/j2objc-annotations-2.8.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-sctp-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-mqtt-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/reload4j-1.2.22.jar:/opt/hadoop/share/hadoop/hdfs/lib/jettison-1.5.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-transport-native-epoll-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/audience-annotations-0.12.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/checker-qual-3.33.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/zookeeper-3.8.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/commons-net-3.9.0.jar:/opt/hadoop/share/hadoop/hdfs/lib/kerb-util-2.0.3.jar:/opt/hadoop/share/hadoop/hdfs/lib/listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar:/opt/hadoop/share/hadoop/hdfs/lib/jakarta.activation-api-1.2.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/nimbus-jose-jwt-10.4.jar:/opt/hadoop/share/hadoop/hdfs/lib/stax2-api-4.2.1.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-codec-haproxy-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/lib/jetty-webapp-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/hdfs/lib/leveldbjni-all-1.8.jar:/opt/hadoop/share/hadoop/hdfs/lib/netty-resolver-4.1.127.Final.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-native-client-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-native-client-3.4.3-tests.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-nfs-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-client-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-rbf-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-3.4.3-tests.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-client-3.4.3-tests.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-httpfs-3.4.3.jar:/opt/hadoop/share/hadoop/hdfs/hadoop-hdfs-rbf-3.4.3-tests.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-uploader-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.4.3-tests.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-core-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-jobclient-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-hs-plugins-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-common-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-app-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-shuffle-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-examples-3.4.3.jar:/opt/hadoop/share/hadoop/mapreduce/hadoop-mapreduce-client-nativetask-3.4.3.jar:/opt/hadoop/share/hadoop/yarn:/opt/hadoop/share/hadoop/yarn/lib/bcutil-jdk18on-1.82.jar:/opt/hadoop/share/hadoop/yarn/lib/jackson-jaxrs-base-2.12.7.jar:/opt/hadoop/share/hadoop/yarn/lib/fst-2.50.jar:/opt/hadoop/share/hadoop/yarn/lib/jackson-module-jaxb-annotations-2.12.7.jar:/opt/hadoop/share/hadoop/yarn/lib/jaxb-runtime-2.3.1.jar:/opt/hadoop/share/hadoop/yarn/lib/jakarta.xml.bind-api-2.3.2.jar:/opt/hadoop/share/hadoop/yarn/lib/asm-tree-9.7.1.jar:/opt/hadoop/share/hadoop/yarn/lib/javax.websocket-api-1.0.jar:/opt/hadoop/share/hadoop/yarn/lib/snakeyaml-2.0.jar:/opt/hadoop/share/hadoop/yarn/lib/jline-3.9.0.jar:/opt/hadoop/share/hadoop/yarn/lib/jna-5.2.0.jar:/opt/hadoop/share/hadoop/yarn/lib/jetty-plus-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/jetty-jndi-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/mssql-jdbc-6.2.1.jre7.jar:/opt/hadoop/share/hadoop/yarn/lib/jetty-client-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/aopalliance-1.0.jar:/opt/hadoop/share/hadoop/yarn/lib/websocket-client-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/websocket-server-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/commons-lang-2.6.jar:/opt/hadoop/share/hadoop/yarn/lib/jackson-jaxrs-json-provider-2.12.7.jar:/opt/hadoop/share/hadoop/yarn/lib/javax.activation-api-1.2.0.jar:/opt/hadoop/share/hadoop/yarn/lib/websocket-servlet-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/swagger-annotations-1.5.4.jar:/opt/hadoop/share/hadoop/yarn/lib/bcpkix-jdk18on-1.82.jar:/opt/hadoop/share/hadoop/yarn/lib/asm-commons-9.7.1.jar:/opt/hadoop/share/hadoop/yarn/lib/jetty-annotations-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/javax-websocket-client-impl-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/guice-4.2.3.jar:/opt/hadoop/share/hadoop/yarn/lib/cache-api-1.1.1.jar:/opt/hadoop/share/hadoop/yarn/lib/ehcache-3.8.2.jar:/opt/hadoop/share/hadoop/yarn/lib/istack-commons-runtime-3.0.7.jar:/opt/hadoop/share/hadoop/yarn/lib/websocket-common-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/jersey-client-1.19.4.jar:/opt/hadoop/share/hadoop/yarn/lib/javax.websocket-client-api-1.0.jar:/opt/hadoop/share/hadoop/yarn/lib/guice-servlet-4.2.3.jar:/opt/hadoop/share/hadoop/yarn/lib/stax-ex-1.8.jar:/opt/hadoop/share/hadoop/yarn/lib/javax-websocket-server-impl-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/FastInfoset-1.2.15.jar:/opt/hadoop/share/hadoop/yarn/lib/jersey-guice-1.19.4.jar:/opt/hadoop/share/hadoop/yarn/lib/javax.inject-1.jar:/opt/hadoop/share/hadoop/yarn/lib/txw2-2.3.1.jar:/opt/hadoop/share/hadoop/yarn/lib/codemodel-2.6.jar:/opt/hadoop/share/hadoop/yarn/lib/websocket-api-9.4.57.v20241219.jar:/opt/hadoop/share/hadoop/yarn/lib/objenesis-2.6.jar:/opt/hadoop/share/hadoop/yarn/lib/jsonschema2pojo-core-1.0.2.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-nodemanager-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-web-proxy-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-common-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-tests-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-services-core-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-sharedcachemanager-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-globalpolicygenerator-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-client-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-distributedshell-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-api-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-mawo-core-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-common-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-timeline-pluginstorage-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-resourcemanager-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-applicationhistoryservice-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-applications-unmanaged-am-launcher-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-registry-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-server-router-3.4.3.jar:/opt/hadoop/share/hadoop/yarn/hadoop-yarn-services-api-3.4.3.jar
+STARTUP_MSG:   build = https://github.com/apache/hadoop.git -r 9d50c6884666e794e45102260a4017bb31802e1b; compiled by 'stevel' on 2026-02-13T14:23Z
+STARTUP_MSG:   java = 11.0.28
+************************************************************/
+2026-11-14 20:33:41 INFO  NameNode:91 - registered UNIX signal handlers for [TERM, HUP, INT]
+2026-11-14 20:33:41 INFO  NameNode:1846 - createNameNode [-format, -force]
+2026-11-14 20:33:42 INFO  NameNode:1393 - Formatting using clusterid: CID-50b4031e-7332-4ec8-a26c-c3733770b5e1
+2026-11-14 20:33:42 INFO  FSEditLog:238 - Edit logging is async:true
+2026-11-14 20:33:42 INFO  FSNamesystem:869 - KeyProvider: null
+2026-11-14 20:33:42 INFO  FSNamesystem:142 - fsLock is fair: true
+2026-11-14 20:33:42 INFO  FSNamesystem:160 - Detailed lock hold time metrics enabled: false
+2026-11-14 20:33:42 INFO  FSNamesystem:904 - fsOwner                = root (auth:SIMPLE)
+2026-11-14 20:33:42 INFO  FSNamesystem:905 - supergroup             = supergroup
+2026-11-14 20:33:42 INFO  FSNamesystem:906 - isPermissionEnabled    = false
+2026-11-14 20:33:42 INFO  FSNamesystem:907 - isStoragePolicyEnabled = true
+2026-11-14 20:33:42 INFO  FSNamesystem:918 - HA Enabled: false
+2026-11-14 20:33:42 INFO  Util:428 - dfs.datanode.fileio.profiling.sampling.percentage set to 0. Disabling file IO profiling
+2026-11-14 20:33:43 INFO  DatanodeManager:412 - Slow peers collection thread shutdown
+2026-11-14 20:33:43 INFO  DatanodeManager:2182 - dfs.block.invalidate.limit : configured=1000, counted=60, effected=1000
+2026-11-14 20:33:43 INFO  DatanodeManager:320 - dfs.namenode.datanode.registration.ip-hostname-check=true
+2026-11-14 20:33:43 INFO  BlockManager:77 - dfs.namenode.startup.delay.block.deletion.sec is set to 000:00:00:00.000
+2026-11-14 20:33:43 INFO  BlockManager:83 - The block deletion will start around 2026 Nov 14 20:33:43
+2026-11-14 20:33:43 INFO  GSet:408 - Computing capacity for map BlocksMap
+2026-11-14 20:33:43 INFO  GSet:409 - VM type       = 64-bit
+2026-11-14 20:33:43 INFO  GSet:410 - 2.0% max memory 884 MB = 17.7 MB
+2026-11-14 20:33:43 INFO  GSet:415 - capacity      = 2^21 = 2097152 entries
+2026-11-14 20:33:43 INFO  BlockManager:5778 - Storage policy satisfier is disabled
+2026-11-14 20:33:43 INFO  BlockManager:696 - dfs.block.access.token.enable = false
+2026-11-14 20:33:43 INFO  BlockManagerSafeMode:656 - Using 1000 as SafeModeMonitor Interval
+2026-11-14 20:33:43 INFO  BlockManagerSafeMode:161 - dfs.namenode.safemode.threshold-pct = 0.999
+2026-11-14 20:33:43 INFO  BlockManagerSafeMode:162 - dfs.namenode.safemode.min.datanodes = 0
+2026-11-14 20:33:43 INFO  BlockManagerSafeMode:164 - dfs.namenode.safemode.extension = 30000
+2026-11-14 20:33:43 INFO  BlockManager:682 - defaultReplication         = 2
+2026-11-14 20:33:43 INFO  BlockManager:683 - maxReplication             = 512
+2026-11-14 20:33:43 INFO  BlockManager:684 - minReplication             = 1
+2026-11-14 20:33:43 INFO  BlockManager:685 - maxReplicationStreams      = 2
+2026-11-14 20:33:43 INFO  BlockManager:686 - redundancyRecheckInterval  = 3000ms
+2026-11-14 20:33:43 INFO  BlockManager:687 - encryptDataTransfer        = false
+2026-11-14 20:33:43 INFO  BlockManager:688 - maxNumBlocksToLog          = 1000
+2026-11-14 20:33:43 INFO  FSDirectory:51 - GLOBAL serial map: bits=29 maxEntries=536870911
+2026-11-14 20:33:43 INFO  FSDirectory:51 - USER serial map: bits=24 maxEntries=16777215
+2026-11-14 20:33:43 INFO  FSDirectory:51 - GROUP serial map: bits=24 maxEntries=16777215
+2026-11-14 20:33:43 INFO  FSDirectory:51 - XATTR serial map: bits=24 maxEntries=16777215
+2026-11-14 20:33:43 INFO  GSet:408 - Computing capacity for map INodeMap
+2026-11-14 20:33:43 INFO  GSet:409 - VM type       = 64-bit
+2026-11-14 20:33:43 INFO  GSet:410 - 1.0% max memory 884 MB = 8.8 MB
+2026-11-14 20:33:43 INFO  GSet:415 - capacity      = 2^20 = 1048576 entries
+2026-11-14 20:33:43 INFO  FSDirectory:339 - ACLs enabled? true
+2026-11-14 20:33:43 INFO  FSDirectory:343 - POSIX ACL inheritance enabled? true
+2026-11-14 20:33:43 INFO  FSDirectory:347 - XAttrs enabled? true
+2026-11-14 20:33:43 INFO  NameNode:414 - Caching file names occurring more than 10 times
+2026-11-14 20:33:43 INFO  SnapshotManager:163 - Loaded config captureOpenFiles: false, skipCaptureAccessTimeOnlyChange: false, snapshotDiffAllowSnapRootDescendant: true, maxSnapshotFSLimit: 65536, maxSnapshotLimit: 65536
+2026-11-14 20:33:43 INFO  SnapshotManager:176 - dfs.namenode.snapshot.deletion.ordered = false
+2026-11-14 20:33:43 INFO  SnapshotManager:43 - SkipList is disabled
+2026-11-14 20:33:43 INFO  GSet:408 - Computing capacity for map cachedBlocks
+2026-11-14 20:33:43 INFO  GSet:409 - VM type       = 64-bit
+2026-11-14 20:33:43 INFO  GSet:410 - 0.25% max memory 884 MB = 2.2 MB
+2026-11-14 20:33:43 INFO  GSet:415 - capacity      = 2^18 = 262144 entries
+2026-11-14 20:33:43 INFO  TopMetrics:76 - NNTop conf: dfs.namenode.top.window.num.buckets = 10
+2026-11-14 20:33:43 INFO  TopMetrics:78 - NNTop conf: dfs.namenode.top.num.users = 10
+2026-11-14 20:33:43 INFO  TopMetrics:80 - NNTop conf: dfs.namenode.top.windows.minutes = 1,5,25
+2026-11-14 20:33:43 INFO  FSNamesystem:1158 - Retry cache on namenode is enabled
+2026-11-14 20:33:43 INFO  FSNamesystem:1166 - Retry cache will use 0.03 of total heap and retry cache entry expiry time is 600000 millis
+2026-11-14 20:33:43 INFO  GSet:408 - Computing capacity for map NameNodeRetryCache
+2026-11-14 20:33:43 INFO  GSet:409 - VM type       = 64-bit
+2026-11-14 20:33:43 INFO  GSet:410 - 0.029999999329447746% max memory 884 MB = 271.6 KB
+2026-11-14 20:33:43 INFO  GSet:415 - capacity      = 2^15 = 32768 entries
+2026-11-14 20:33:43 INFO  FSImage:187 - Allocated new BlockPoolId: BP-68620352-172.20.0.4-1794688423709
+2026-11-14 20:33:43 INFO  Storage:595 - Storage directory /tmp/hadoop-root/dfs/name has been successfully formatted.
+2026-11-14 20:33:43 INFO  FSImageFormatProtobuf:732 - Saving image file /tmp/hadoop-root/dfs/name/current/fsimage.ckpt_0000000000000000000 using no compression
+2026-11-14 20:33:44 INFO  FSImageFormatProtobuf:736 - Image file /tmp/hadoop-root/dfs/name/current/fsimage.ckpt_0000000000000000000 of size 399 bytes saved in 0 seconds .
+2026-11-14 20:33:44 INFO  NNStorageRetentionManager:205 - Going to retain 1 images with txid >= 0
+2026-11-14 20:33:44 INFO  DatanodeManager:412 - Slow peers collection thread shutdown
+2026-11-14 20:33:44 INFO  FSNamesystem:1509 - Stopping services started for active state
+2026-11-14 20:33:44 INFO  FSNamesystem:1613 - Stopping services started for standby state
+2026-11-14 20:33:44 INFO  FSImage:1062 - FSImageSaver clean checkpoint: txid=0 when meet shutdown.
+2026-11-14 20:33:44 INFO  NameNode:822 - SHUTDOWN_MSG: 
+/************************************************************
+SHUTDOWN_MSG: Shutting down NameNode at namenode/172.20.0.4
+************************************************************/
+PS C:\Tugas krisna\big_data\UAS> docker compose up -d
+time="2026-11-15T03:33:50+07:00" level=warning msg="C:\\Tugas krisna\\big_data\\UAS\\docker-compose.yml: the attribute `version` is obsolete, it will be ignored, please remove it to avoid potential confusion"
+[+] up 7/7
+ ✔ Container mongodb-uas    Running                                                                                                                                                                                                                                   0.0s
+ ✔ Container spark-master   Running                                                                                                                                                                                                                                   0.0s
+ ✔ Container spark-worker-1 Running                                                                                                                                                                                                                                   0.0s
+ ✔ Container spark-worker-2 Running                                                                                                                                                                                                                                   0.0s
+ ✔ Container namenode       Started                                                                                                                                                                                                                                   4.3s
+ ✔ Container datanode2      Started                                                                                                                                                                                                                                   4.1s
+ ✔ Container datanode1      Started                                                                                                                                                                                                                                   4.1s
+
+What's next:
+    Filter, search, and stream logs from all your Compose services
+    in one place with Docker Desktop's Logs view. docker-desktop://dashboard/logs
+PS C:\Tugas krisna\big_data\UAS> docker ps
+CONTAINER ID   IMAGE                 COMMAND                  CREATED          STATUS          PORTS                                                                                                                                   NAMES
+13afb1aa0965   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   8 seconds ago    Up 4 seconds                                                                                                                                            datanode2
+c25aaf36a449   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   8 seconds ago    Up 4 seconds                                                                                                                                            datanode1
+dd047d7c446d   apache/hadoop:3.4.3   "/usr/local/bin/dumb…"   9 seconds ago    Up 5 seconds    0.0.0.0:9000->9000/tcp, [::]:9000->9000/tcp, 0.0.0.0:9870->9870/tcp, [::]:9870->9870/tcp                                                namenode
+05afc88316e3   apache/spark:3.5.6    "/opt/entrypoint.sh …"   15 minutes ago   Up 15 minutes   0.0.0.0:8081->8081/tcp, [::]:8081->8081/tcp                                                                                             spark-worker-1
+14ce1fa4ff97   apache/spark:3.5.6    "/opt/entrypoint.sh …"   15 minutes ago   Up 15 minutes   0.0.0.0:8082->8081/tcp, [::]:8082->8081/tcp                                                                                             spark-worker-2
+3da1e7f6044e   mongo:8               "docker-entrypoint.s…"   15 minutes ago   Up 15 minutes   0.0.0.0:27017->27017/tcp, [::]:27017->27017/tcp                                                                                         mongodb-uas
+23c546aad46d   apache/spark:3.5.6    "/opt/entrypoint.sh …"   15 minutes ago   Up 15 minutes   0.0.0.0:4040->4040/tcp, [::]:4040->4040/tcp, 0.0.0.0:7077->7077/tcp, [::]:7077->7077/tcp, 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp   spark-master
+PS C:\Tugas krisna\big_data\UAS> docker cp "C:\Tugas krisna\big_data\UAS\berita_antara_final.csv" namenode:/tmp/dataset.csv
+Successfully copied 86.6MB (transferred 86.6MB) to namenode:/tmp/dataset.csv
+PS C:\Tugas krisna\big_data\UAS> docker exec namenode hdfs dfs -mkdir -p /proyek_bigdata/raw
+PS C:\Tugas krisna\big_data\UAS> docker exec namenode hdfs dfs -put /data/dataset.csv /proyek_bigdata/raw/
+put: `/data/dataset.csv': No such file or directory
+PS C:\Tugas krisna\big_data\UAS> docker exec namenode hdfs dfs -put /tmp/dataset.csv /proyek_bigdata/raw/
+PS C:\Tugas krisna\big_data\UAS> docker exec namenode hdfs dfs -ls -h /proyek_bigdata/raw/
+Found 1 items
+-rw-r--r--   2 root supergroup     82.6 M 2026-11-14 20:35 /proyek_bigdata/raw/dataset.csv
+PS C:\Tugas krisna\big_data\UAS> docker exec -it spark-master /opt/spark/bin/spark-submit /scripts/cek_data.py
+26/11/14 20:41:31 INFO SparkContext: Running Spark version 3.5.6
+26/11/14 20:41:32 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/14 20:41:32 INFO SparkContext: Java version 11.0.27
+26/11/14 20:41:32 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/14 20:41:32 INFO ResourceUtils: ==============================================================
+26/11/14 20:41:32 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/14 20:41:32 INFO ResourceUtils: ==============================================================
+26/11/14 20:41:32 INFO SparkContext: Submitted application: BacaDataBeritaHDFS
+26/11/14 20:41:32 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/14 20:41:32 INFO ResourceProfile: Limiting resource is cpu
+26/11/14 20:41:32 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/14 20:41:32 INFO SecurityManager: Changing view acls to: spark
+26/11/14 20:41:32 INFO SecurityManager: Changing modify acls to: spark
+26/11/14 20:41:32 INFO SecurityManager: Changing view acls groups to: 
+26/11/14 20:41:32 INFO SecurityManager: Changing modify acls groups to: 
+26/11/14 20:41:32 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/14 20:41:33 INFO Utils: Successfully started service 'sparkDriver' on port 38431.
+26/11/14 20:41:33 INFO SparkEnv: Registering MapOutputTracker
+26/11/14 20:41:33 INFO SparkEnv: Registering BlockManagerMaster
+26/11/14 20:41:33 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/14 20:41:33 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/14 20:41:33 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/14 20:41:33 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-e4e9a059-51ad-41b9-ae73-ed00043c01b7
+26/11/14 20:41:33 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/14 20:41:33 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/14 20:41:34 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/14 20:41:34 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/14 20:41:34 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/14 20:41:34 INFO TransportClientFactory: Successfully created connection to spark-master/172.20.0.3:7077 after 61 ms (0 ms spent in bootstraps)
+26/11/14 20:41:35 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261114204135-0000
+26/11/14 20:41:35 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 33671.
+26/11/14 20:41:35 INFO NettyBlockTransferService: Server created on spark-master:33671
+26/11/14 20:41:35 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/14 20:41:35 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 33671, None)
+26/11/14 20:41:35 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:33671 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 33671, None)
+26/11/14 20:41:35 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 33671, None)
+26/11/14 20:41:35 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 33671, None)
+26/11/14 20:41:36 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261114204135-0000/0 on worker-20261114201900-172.20.0.6-43251 (172.20.0.6:43251) with 2 core(s)
+26/11/14 20:41:36 INFO StandaloneSchedulerBackend: Granted executor ID app-20261114204135-0000/0 on hostPort 172.20.0.6:43251 with 2 core(s), 1024.0 MiB RAM
+26/11/14 20:41:36 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261114204135-0000/1 on worker-20261114201900-172.20.0.5-34093 (172.20.0.5:34093) with 2 core(s)
+26/11/14 20:41:36 INFO StandaloneSchedulerBackend: Granted executor ID app-20261114204135-0000/1 on hostPort 172.20.0.5:34093 with 2 core(s), 1024.0 MiB RAM
+26/11/14 20:41:37 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+=== MEMBACA DATASET DARI HDFS ===
+
+--- 1. SKEMA & NAMA KOLOM ---
+root
+ |-- id_artikel: string (nullable = true)
+ |-- judul: string (nullable = true)
+ |-- ringkasan: string (nullable = true)
+ |-- isi_artikel: string (nullable = true)
+ |-- tanggal_publikasi: string (nullable = true)
+ |-- nama_media: string (nullable = true)
+ |-- kategori: string (nullable = true)
+ |-- url: string (nullable = true)
+ |-- waktu_diambil: string (nullable = true)
+
+
+--- 2. TOTAL BARIS MENTAH: 33830 ---
+
+--- 3. SAMPEL 5 DATA TERATAS ---
++----------+--------------------------------------------------+--------------------------------------------------+--------------------------------------------------+-------------------------+-----------+---------+--------------------------------------------------+-------------------------+
+|id_artikel|                                             judul|                                         ringkasan|                                       isi_artikel|        tanggal_publikasi| nama_media| kategori|                                               url|          waktu_diambil|
++----------+--------------------------------------------------+--------------------------------------------------+--------------------------------------------------+-------------------------+-----------+---------+--------------------------------------------------+-------------------------+
+|   3368997|OPPO Find X5 Pro 5G dibekali "speaker" Dolby Atmos|OPPO bekerja sama dengan Dolby untuk menghasilk...|OPPO bekerja sama dengan Dolby untuk menghasilk...|2023-01-28T09:02:21+07:00|ANTARA News|Teknologi|https://www.antaranews.com/berita/3368997/oppo-...|2026-11-12T22:03:18+00:00|
+|    669580|BPPT: prastudi kereta semi cepat Jakarta-Suraba...|Badan Pengkajian dan Penerapan Teknologi (BPPT)...|Yogyakarta (ANTARA News) - Badan Pengkajian dan...|2017-12-07T15:47:31+07:00|ANTARA News|Teknologi|https://www.antaranews.com/berita/669580/bppt-p...|2026-11-12T23:28:33+00:00|
+|   5759323|Guruh Soekarnoputra wafat Sabtu pagi di usia 73...|Mohammad Guruh Irianto Soekarnoputra Bin Sukarn...|Mohammad Guruh Irianto Soekarnoputra Bin Sukarn...|2026-09-26T07:52:02+07:00|ANTARA News|  Hiburan|https://www.antaranews.com/berita/5759323/guruh...|2026-11-12T21:56:48+00:00|
+|    416369|            LIPI rencanakan ekspedisi Laut Arafura|Balai Konservasi Biota Laut (BKBL) LIPI Ambon m...|Ambon (ANTARA News) - Balai Konservasi Biota La...|2014-01-28T14:50:11+07:00|ANTARA News|Teknologi|https://www.antaranews.com/berita/416369/lipi-r...|2026-11-13T00:49:21+00:00|
+|   4315231|Promotor sediakan tambahan tiket konser Sheila ...|Promotor Antara Suara dan Gold Live Indonesia m...|Promotor Antara Suara dan Gold Live Indonesia m...|2024-09-07T13:05:36+07:00|ANTARA News|  Hiburan|https://www.antaranews.com/berita/4315231/promo...|2026-11-12T23:36:07+00:00|
++----------+--------------------------------------------------+--------------------------------------------------+--------------------------------------------------+-------------------------+-----------+---------+--------------------------------------------------+-------------------------+
+only showing top 5 rows
+
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug spark-master
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\Tugas krisna\big_data\UAS> docker exec -it spark-master /opt/spark/bin/spark-submit /scripts/proses_spark.py
+26/11/14 20:52:07 INFO SparkContext: Running Spark version 3.5.6
+26/11/14 20:52:07 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/14 20:52:07 INFO SparkContext: Java version 11.0.27
+26/11/14 20:52:07 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/14 20:52:07 INFO ResourceUtils: ==============================================================
+26/11/14 20:52:07 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/14 20:52:07 INFO ResourceUtils: ==============================================================
+26/11/14 20:52:07 INFO SparkContext: Submitted application: BagianB_PengolahanAnalisisBeritaAntara
+26/11/14 20:52:07 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/14 20:52:07 INFO ResourceProfile: Limiting resource is cpu
+26/11/14 20:52:07 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/14 20:52:07 INFO SecurityManager: Changing view acls to: spark
+26/11/14 20:52:07 INFO SecurityManager: Changing modify acls to: spark
+26/11/14 20:52:07 INFO SecurityManager: Changing view acls groups to: 
+26/11/14 20:52:07 INFO SecurityManager: Changing modify acls groups to: 
+26/11/14 20:52:07 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/14 20:52:08 INFO Utils: Successfully started service 'sparkDriver' on port 42535.
+26/11/14 20:52:08 INFO SparkEnv: Registering MapOutputTracker
+26/11/14 20:52:08 INFO SparkEnv: Registering BlockManagerMaster
+26/11/14 20:52:08 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/14 20:52:08 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/14 20:52:08 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/14 20:52:08 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-9ae8bc37-9e7d-476b-9c31-31be2cf4008a
+26/11/14 20:52:08 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/14 20:52:08 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/14 20:52:09 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/14 20:52:09 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/14 20:52:09 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/14 20:52:09 INFO TransportClientFactory: Successfully created connection to spark-master/172.20.0.3:7077 after 64 ms (0 ms spent in bootstraps)
+26/11/14 20:52:09 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261114205209-0001
+26/11/14 20:52:09 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 33249.
+26/11/14 20:52:09 INFO NettyBlockTransferService: Server created on spark-master:33249
+26/11/14 20:52:09 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/14 20:52:09 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261114205209-0001/0 on worker-20261114201900-172.20.0.6-43251 (172.20.0.6:43251) with 2 core(s)
+26/11/14 20:52:09 INFO StandaloneSchedulerBackend: Granted executor ID app-20261114205209-0001/0 on hostPort 172.20.0.6:43251 with 2 core(s), 1024.0 MiB RAM
+26/11/14 20:52:09 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261114205209-0001/1 on worker-20261114201900-172.20.0.5-34093 (172.20.0.5:34093) with 2 core(s)
+26/11/14 20:52:09 INFO StandaloneSchedulerBackend: Granted executor ID app-20261114205209-0001/1 on hostPort 172.20.0.5:34093 with 2 core(s), 1024.0 MiB RAM
+26/11/14 20:52:09 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 33249, None)
+26/11/14 20:52:09 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:33249 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 33249, None)
+26/11/14 20:52:09 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 33249, None)
+26/11/14 20:52:09 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 33249, None)
+26/11/14 20:52:10 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261114205209-0001/1 is now RUNNING
+26/11/14 20:52:10 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261114205209-0001/0 is now RUNNING
+26/11/14 20:52:10 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA DATASET MENTAH DARI HDFS ===
+
+=== 2. STRUKTUR & JUMLAH BARIS AWAL ===
+root
+ |-- id_artikel: string (nullable = true)
+ |-- judul: string (nullable = true)
+ |-- ringkasan: string (nullable = true)
+ |-- isi_artikel: string (nullable = true)
+ |-- tanggal_publikasi: string (nullable = true)
+ |-- nama_media: string (nullable = true)
+ |-- kategori: string (nullable = true)
+ |-- url: string (nullable = true)
+ |-- waktu_diambil: string (nullable = true)
+
+Total baris mentah: 33830
+
+Jumlah nilai NULL per kolom (Sebelum Cleaning):
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+|id_artikel|judul|ringkasan|isi_artikel|tanggal_publikasi|nama_media|kategori|url|waktu_diambil|
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+|         0|    0|        0|          0|                0|         0|       0|  0|            0|
++----------+-----+---------+-----------+-----------------+----------+--------+---+-------------+
+
+
+=== 3. PEMBERSIHAN DATA (DATA CLEANING) ===
+Total baris setelah dibersihkan : 33776
+Total baris rusak/duplikat dibuang: 54
+
+=== 4. TRANSFORMASI DATA ===
+Total baris final siap analisis & MLlib: 33776
++----------+--------+---------------+-----------+-----------+
+|id_artikel|kategori|tahun_publikasi|jumlah_kata|teks_bersih|
++----------+--------+---------------+-----------+-----------+
+|    605705| hiburan|           2017|         -1|       NULL|
+|    692942| hiburan|           2018|         -1|       NULL|
+|   5737171| hiburan|           2026|         -1|       NULL|
+|    765079| hiburan|           2018|         -1|       NULL|
+|    769183| hiburan|           2018|         -1|       NULL|
++----------+--------+---------------+-----------+-----------+
+only showing top 5 rows
+
+Data bersih berhasil disimpan ke HDFS: /proyek_bigdata/clean/berita_clean.parquet
+
+=== 5. HASIL ANALISIS DATA (MINIMAL 3 ANALISIS) ===
+
+[Analisis 1] Distribusi Jumlah Berita per Kategori (DataFrame API):
++---------+------------+
+|kategori |total_berita|
++---------+------------+
+|olahraga |6766        |
+|hiburan  |6766        |
+|teknologi|6764        |
+|politik  |6764        |
+|ekonomi  |6716        |
++---------+------------+
+
+
+[Analisis 2] Statistik Panjang Kata per Kategori (Spark SQL):
++---------+--------------+--------------+--------+--------+
+|kategori |jumlah_artikel|rata_rata_kata|min_kata|max_kata|
++---------+--------------+--------------+--------+--------+
+|teknologi|6764          |-1.0          |-1      |-1      |
+|olahraga |6766          |-1.0          |-1      |-1      |
+|hiburan  |6766          |-1.0          |-1      |-1      |
+|ekonomi  |6716          |-1.0          |-1      |-1      |
+|politik  |6764          |-1.0          |-1      |-1      |
++---------+--------------+--------------+--------+--------+
+
+
+[Analisis 3] Distribusi Publikasi Berita per Tahun (Spark SQL):
++---------------+-------------+--------------+
+|tahun_publikasi|total_artikel|rata_rata_kata|
++---------------+-------------+--------------+
+|2026           |20910        |-1.0          |
+|2025           |3341         |-1.0          |
+|2024           |1933         |-1.0          |
+|2023           |1437         |-1.0          |
+|2022           |787          |-1.0          |
+|2021           |78           |-1.0          |
+|2019           |1124         |-1.0          |
+|2018           |1591         |-1.0          |
+|2017           |904          |-1.0          |
+|2016           |752          |-1.0          |
+|2015           |333          |-1.0          |
+|2014           |390          |-1.0          |
+|2013           |196          |-1.0          |
++---------------+-------------+--------------+
+
+
+[Analisis 4] Jumlah Artikel Mendalam (> 300 Kata) per Kategori (Spark SQL):
++--------+----------------+
+|kategori|artikel_mendalam|
++--------+----------------+
++--------+----------------+
+
+
+What's next:
+    Try Docker Debug for seamless, persistent debugging tools in any container or image → docker debug spark-master
+    Learn more at https://docs.docker.com/go/debug-cli/
+PS C:\Tugas krisna\big_data\UAS> 

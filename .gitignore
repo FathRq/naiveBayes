@@ -1,0 +1,14 @@
+# Dataset (83 MB) — jangan di-commit
+berita_antara_final.csv
+*.csv
+
+# Panduan (PDF)
+*.pdf
+
+# Python
+__pycache__/
+*.pyc
+
+# OS
+.DS_Store
+Thumbs.db

@@ -1,0 +1,195 @@
+26/11/17 06:57:31 INFO SparkContext: Running Spark version 3.5.6
+26/11/17 06:57:31 INFO SparkContext: OS info Linux, 7.3.3-100.fc43.x86_64, amd64
+26/11/17 06:57:31 INFO SparkContext: Java version 11.0.27
+26/11/17 06:57:31 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/17 06:57:31 INFO ResourceUtils: ==============================================================
+26/11/17 06:57:31 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/17 06:57:31 INFO ResourceUtils: ==============================================================
+26/11/17 06:57:31 INFO SparkContext: Submitted application: BagianC_MLlib_NaiveBayes_KlasifikasiBerita
+26/11/17 06:57:31 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/17 06:57:31 INFO ResourceProfile: Limiting resource is cpu
+26/11/17 06:57:31 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/17 06:57:31 INFO SecurityManager: Changing view acls to: spark
+26/11/17 06:57:31 INFO SecurityManager: Changing modify acls to: spark
+26/11/17 06:57:31 INFO SecurityManager: Changing view acls groups to: 
+26/11/17 06:57:31 INFO SecurityManager: Changing modify acls groups to: 
+26/11/17 06:57:31 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/17 06:57:31 INFO Utils: Successfully started service 'sparkDriver' on port 36729.
+26/11/17 06:57:31 INFO SparkEnv: Registering MapOutputTracker
+26/11/17 06:57:32 INFO SparkEnv: Registering BlockManagerMaster
+26/11/17 06:57:32 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/17 06:57:32 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/17 06:57:32 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/17 06:57:32 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-09bc19b5-3fc0-4707-a68b-2541654eaf76
+26/11/17 06:57:32 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/17 06:57:32 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/17 06:57:32 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/17 06:57:32 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/17 06:57:32 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/17 06:57:32 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.4:7077 after 28 ms (0 ms spent in bootstraps)
+26/11/17 06:57:32 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261117065732-0013
+26/11/17 06:57:32 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261117065732-0013/0 on worker-20261117062358-172.21.0.8-39425 (172.21.0.8:39425) with 2 core(s)
+26/11/17 06:57:32 INFO StandaloneSchedulerBackend: Granted executor ID app-20261117065732-0013/0 on hostPort 172.21.0.8:39425 with 2 core(s), 1024.0 MiB RAM
+26/11/17 06:57:32 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261117065732-0013/1 on worker-20261117062358-172.21.0.5-39469 (172.21.0.5:39469) with 2 core(s)
+26/11/17 06:57:32 INFO StandaloneSchedulerBackend: Granted executor ID app-20261117065732-0013/1 on hostPort 172.21.0.5:39469 with 2 core(s), 1024.0 MiB RAM
+26/11/17 06:57:32 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 37407.
+26/11/17 06:57:32 INFO NettyBlockTransferService: Server created on spark-master:37407
+26/11/17 06:57:32 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/17 06:57:32 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 37407, None)
+26/11/17 06:57:32 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:37407 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 37407, None)
+26/11/17 06:57:32 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 37407, None)
+26/11/17 06:57:32 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 37407, None)
+26/11/17 06:57:32 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261117065732-0013/0 is now RUNNING
+26/11/17 06:57:32 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261117065732-0013/1 is now RUNNING
+26/11/17 06:57:32 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA DATA BERSIH (PARQUET) DARI HDFS ===
+root
+ |-- kategori: string (nullable = true)
+ |-- id_artikel: long (nullable = true)
+ |-- judul: string (nullable = true)
+ |-- ringkasan: string (nullable = true)
+ |-- isi_artikel: string (nullable = true)
+ |-- tanggal_publikasi: string (nullable = true)
+ |-- nama_media: string (nullable = true)
+ |-- url: string (nullable = true)
+ |-- waktu_diambil: string (nullable = true)
+ |-- waktu_publikasi_ts: timestamp (nullable = true)
+ |-- tahun_publikasi: integer (nullable = true)
+ |-- bulan_publikasi: integer (nullable = true)
+ |-- isi_tanpa_copyright: string (nullable = true)
+ |-- teks_bersih: string (nullable = true)
+ |-- panjang_karakter: integer (nullable = true)
+ |-- jumlah_kata: integer (nullable = true)
+
+Total baris: 33776
+
+Distribusi label (kategori):
++---------+-----+
+| kategori|count|
++---------+-----+
+|  ekonomi| 6716|
+|  hiburan| 6766|
+| olahraga| 6766|
+|  politik| 6764|
+|teknologi| 6764|
++---------+-----+
+
+
+=== 2. EKSTRAKSI FITUR: Tokenizer -> HashingTF -> IDF ===
+
+=== 3. ENKODING LABEL: StringIndexer ===
+Peta indeks -> kategori:
+  0 -> hiburan
+  1 -> olahraga
+  2 -> politik
+  3 -> teknologi
+  4 -> ekonomi
+
+=== 4. SPLIT TRAIN/TEST 80/20 (seed=42) ===
+26/11/17 06:57:50 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+Baris train : 27220
+26/11/17 06:57:54 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+Baris test  : 6556
+
+=== 5. PELATIHAN MODEL: NaiveBayes (multinomial) ===
+26/11/17 06:57:58 WARN DAGScheduler: Broadcasting large task binary with size 1666.8 KiB
+26/11/17 06:58:03 WARN DAGScheduler: Broadcasting large task binary with size 1637.6 KiB
+
+=== 6. PREDIKSI PADA DATA TEST ===
+
+=== 7. EVALUASI MODEL ===
+26/11/17 06:58:03 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+
+[Accuracy]  : 0.9169  (91.69%)
+
+[Metrik rata-rata tertimbang (weighted):]
+26/11/17 06:58:07 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+  weightedPrecision : 0.9182
+26/11/17 06:58:11 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+  weightedRecall    : 0.9169
+26/11/17 06:58:15 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+  weightedFMeasure  : 0.9170
+
+[Metrik per kategori]:
+26/11/17 06:58:19 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:23 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:27 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:31 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:35 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:39 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:43 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:47 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:51 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:54 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:58:57 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:01 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:04 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:07 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:11 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
++---------+------------------+------------------+------------------+
+| kategori|         precision|            recall|                f1|
++---------+------------------+------------------+------------------+
+| olahraga|0.9944444444444445|0.9750972762645914|0.9846758349705304|
+|  hiburan| 0.917037037037037|0.9435975609756098|0.9301277235161532|
+|teknologi|0.9386343993085566|0.8598574821852731|0.8975206611570248|
+|  ekonomi|0.8823529411764706|0.8982035928143712|0.8902077151335311|
+|  politik|0.8635409377186843|0.9073529411764706|0.8849049838651847|
++---------+------------------+------------------+------------------+
+
+[Confusion Matrix] (baris = kategori sebenarnya, kolom = prediksi):
+26/11/17 06:59:15 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:18 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:18 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:18 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+sebenarnya/prediksi |    hiburan |   olahraga |    politik |  teknologi |    ekonomi
+------------------------------------------------------------------------------------------
+hiburan            |       1238 |          3 |         28 |         28 |         15
+olahraga           |         15 |       1253 |         15 |          1 |          1
+politik            |         21 |          3 |       1234 |         23 |         79
+teknologi          |         52 |          0 |         60 |       1086 |         65
+ekonomi            |         24 |          1 |         92 |         19 |       1200
+
+[Contoh prediksi BENAR (5 baris)]:
+26/11/17 06:59:19 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
++----------+---------+----------+
+|id_artikel|kategori |prediction|
++----------+---------+----------+
+|383028    |teknologi|3.0       |
+|384335    |teknologi|3.0       |
+|387401    |teknologi|3.0       |
+|391464    |teknologi|3.0       |
+|394549    |teknologi|3.0       |
++----------+---------+----------+
+only showing top 5 rows
+
+[Contoh prediksi SALAH (5 baris)]:
+26/11/17 06:59:21 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
++----------+---------+----------+
+|id_artikel|kategori |prediction|
++----------+---------+----------+
+|404434    |teknologi|0.0       |
+|407434    |teknologi|2.0       |
+|423185    |teknologi|0.0       |
+|523124    |teknologi|0.0       |
+|536766    |teknologi|0.0       |
++----------+---------+----------+
+only showing top 5 rows
+
+
+=== 8. SIMPAN HASIL KE HDFS ===
+26/11/17 06:59:23 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:25 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/17 06:59:28 WARN DAGScheduler: Broadcasting large task binary with size 5.6 MiB
+Prediksi test set disimpan ke : hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi.parquet
+26/11/17 06:59:29 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+Jumlah baris prediksi disimpan: 6556
+26/11/17 06:59:32 WARN TaskSetManager: Stage 77 contains a task of very large size (3995 KiB). The maximum recommended task size is 1000 KiB.
+Model NaiveBayes disimpan ke  : hdfs://namenode:9000/proyek_bigdata/model/naive_bayes_model
+
+=== 9. RINGKASAN ===
+26/11/17 06:59:33 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+Data test        : 6556 artikel
+Accuracy         : 91.69%
+Kelas terbanyak  : olahraga (F1 tertinggi)
+Evaluasi selesai. Hasil siap diinterpretasi & (opsional) dikirim ke MongoDB.
