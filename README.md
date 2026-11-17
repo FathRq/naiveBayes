@@ -1,6 +1,6 @@
-# Klasifikasi Berita Indonesia — Naive Bayes (Spark MLlib)
+# Klasifikasi Berita Indonesia Naive Bayes (Spark MLlib)
 
-> Proyek akhir Big Data 2026 — Topik 4: Klasifikasi Berita Indonesia
+> Proyek akhir Big Data 2026 Topik 4: Klasifikasi Berita Indonesia
 > S1 Informatika, Fakultas Teknik, UNESA
 
 ## Apa yang ada di sini
@@ -15,11 +15,11 @@ HDFS (data mentah) -> Spark (bersih) -> MLlib (Naive Bayes) -> Evaluasi -> Mongo
 
 Hasil akhirnya **akurasi 91,27%** (skenario dedup, yang bebas-leakage). Model
 saya latih dari nol (`NaiveBayes.fit`) dengan 100% parameter default
-(`smoothing=1.0`, `modelType=multinomial`) — tidak pakai model pre-trained,
+(`smoothing=1.0`, `modelType=multinomial`) tidak pakai model pre-trained,
 tidak ada tuning.
 
 README ini saya tulis sebagai info untuk kamu (dan tim): cara setup clusternya,
-cara run skripnya, dan — khusus untuk yang pegang NoSQL — apa yang sudah saya
+cara run skripnya, dan khusus untuk yang pegang NoSQL apa yang sudah saya
 siapkan dan apa yang perlu kamu kerjakan.
 
 ## Clusternya: 7 container
@@ -27,8 +27,8 @@ siapkan dan apa yang perlu kamu kerjakan.
 | Container | Image | Fungsi | Port |
 |---|---|---|---|
 | `namenode` | `apache/hadoop:3.4.3` | HDFS NameNode | 9870 (UI), 9000 |
-| `datanode1` | `apache/hadoop:3.4.3` | HDFS DataNode | — |
-| `datanode2` | `apache/hadoop:3.4.3` | HDFS DataNode | — |
+| `datanode1` | `apache/hadoop:3.4.3` | HDFS DataNode | |
+| `datanode2` | `apache/hadoop:3.4.3` | HDFS DataNode | |
 | `spark-master` | `apache/spark:3.5.6` | Spark Master | 8080 (UI), 7077, 4040 |
 | `spark-worker-1` | `apache/spark:3.5.6` | Spark Worker (2 core, 1G) | 8081 |
 | `spark-worker-2` | `apache/spark:3.5.6` | Spark Worker (2 core, 1G) | 8082 |
@@ -48,14 +48,14 @@ di mesin dengan RAM 11 GB. Data TF-IDF-nya sparse, jadi 1G cukup.
    ```bash
    docker compose up -d
    ```
-   Tunggu sekitar 1 menit, lalu cek `docker ps` — harusnya 7 container `Up`.
+   Tunggu sekitar 1 menit, lalu cek `docker ps` harusnya 7 container `Up`.
 
 3. Format NameNode (hanya saat pertama, HDFS masih kosong):
    ```bash
    docker exec -u root namenode hdfs namenode -format -force
    ```
-   ⚠️ Hati-hati, perintah ini **menghapus semua data HDFS**. Jadi cuma dilakukan
-   sekali di awal. Setelah data ter-upload, jangan format lagi — datanya
+   Hati-hati, perintah ini **menghapus semua data HDFS**. Jadi cuma dilakukan
+   sekali di awal. Setelah data ter-upload, jangan format lagi datanya
    tersimpan di Docker volume dan tetap ada kalau container di-restart.
 
 4. Upload dataset ke HDFS:
@@ -86,12 +86,12 @@ docker exec spark-master /opt/spark/bin/spark-submit /scripts/<nama>.py
 
 Urutannya:
 
-1. **`proses_spark.py`** — baca CSV dari HDFS, bersihkan (handle NULL, hapus
+1. **`proses_spark.py`** baca CSV dari HDFS, bersihkan (handle NULL, hapus
    boilerplate copyright, normalisasi), bikin kolom `teks_bersih`, plus beberapa
    analisis. Output: `/proyek_bigdata/clean/berita_clean.parquet`
    (33.776 baris, 0 NULL).
 
-2. **`mllib_naive_bayes_lengkap.py`** — ini inti proyeknya. Satu skrip, satu
+2. **`mllib_naive_bayes_lengkap.py`** ini inti proyeknya. Satu skrip, satu
    perintah, menjalankan skenario eksperimen lengkap:
    - Skenario **RAW** (33.776 baris) → akurasi 91,69%
    - Skenario **DEDUP** (33.555 baris, 221 near-duplikat dibuang) → **91,27%** ← angka resmi
@@ -103,10 +103,10 @@ Urutannya:
    `ringkasan_analisis.json`.
 
 3. Skrip pendukung (opsional, kalau mau bukti tambahan):
-   - `bukti_tidak_leakage.py` — bukti visual bahwa model hanya melihat vektor
+   - `bukti_tidak_leakage.py` bukti visual bahwa model hanya melihat vektor
      TF-IDF (angka), kolom `kategori` hanya jadi label
-   - `audit_duplikat.py` — audit 221 near-duplikat (semua artikel IHSG)
-   - `simpan_mongodb.py` — prediksi per artikel → MongoDB
+   - `audit_duplikat.py` audit 221 near-duplikat (semua artikel IHSG)
+   - `simpan_mongodb.py` prediksi per artikel → MongoDB
 
 ## Hasil
 
@@ -128,7 +128,7 @@ Per kategori (dedup):
 | politik | 0,8646 | 0,8949 | 0,8795 |
 
 Olahraga paling mudah dipisahkan (F1 0,988). Politik yang paling menantang;
-kesalahan terbanyak adalah berita politik yang ditebak ekonomi (91 artikel) —
+kesalahan terbanyak adalah berita politik yang ditebak ekonomi (91 artikel)
 masuk akal, karena kedua topik sering beririsan (kebijakan fiskal, regulasi, dll).
 
 ## Penyimpanan
@@ -146,17 +146,13 @@ HDFS:
 ```
 
 MongoDB (database `proyek_bigdata`):
-- `berita_prediksi` — 6.556 dokumen, hasil prediksi per artikel
-- `ringkasan_analisis` — 1 dokumen, ringkasan keseluruhan
+- `berita_prediksi` 6.556 dokumen, hasil prediksi per artikel
+- `ringkasan_analisis` 1 dokumen, ringkasan keseluruhan
 
-## Untuk kamu yang pegang NoSQL
-
-Bagian NoSQL itu opsional menurut panduan (poin 6.D), tapi tetap bagian
-tanggung jawab kita. Ini yang sudah saya siapkan:
-
+## NoSQL
 - Container `mongodb-uas` (mongo:8) sudah jalan, port **27017**
 - `pymongo` sudah terinstall di container `spark-master`
-- Skrip `scripts/simpan_mongodb.py` — baca prediksi dari HDFS, tulis ke
+- Skrip `scripts/simpan_mongodb.py` baca prediksi dari HDFS, tulis ke
   MongoDB. Skripnya idempoten (collection dibersihkan dulu lalu di-insert
   ulang), jadi aman di-run berkali-kali
 - Kedua collection di atas sudah terisi
@@ -168,10 +164,10 @@ Dari dalam jaringan Docker (container):  mongodb://mongodb:27017
 Dari host (localhost):                   mongodb://localhost:27017
 ```
 
-Yang perlu kamu kerjakan:
+Yang perlu dikerjakan:
 
 1. **Tunjukkan minimal 1 operasi tulis + 1 operasi baca** (syarat panduan
-   6.D). `simpan_mongodb.py` sudah melakukan keduanya (insert + read-back) —
+   6.D). `simpan_mongodb.py` sudah melakukan keduanya (insert + read-back)
    kamu bisa langsung re-run, atau bikin skripmu sendiri.
    ```bash
    docker exec spark-master /opt/spark/bin/spark-submit /scripts/simpan_mongodb.py
@@ -183,7 +179,7 @@ Yang perlu kamu kerjakan:
 3. Kalau butuh data per artikel (mis. untuk tabel atau filter di web app),
    baca collection `berita_prediksi`.
 
-Skema dokumennya:
+Skema dokumen:
 
 `berita_prediksi` (1 dokumen = 1 artikel):
 ```json
@@ -226,12 +222,12 @@ Skema dokumennya:
 | Port 9870/8080/27017 bentrok | ubah mapping port di `docker-compose.yml` |
 
 Beberapa jebakan yang saya temui, biar kamu tidak jatuh ke yang sama:
-- Python di container Spark itu 3.8/3.9 — jangan pakai backslash di f-string,
+- Python di container Spark itu 3.8/3.9 jangan pakai backslash di f-string,
   jangan pakai nested brace di f-string.
 - Di Spark 3.5, estimator-nya namanya `IDF` (bukan `IDFTransformer`).
 - Metrik per-kelas di `MulticlassClassificationEvaluator` pakai parameter
   `metricLabel` (bukan `label`).
-- Kolom `probability`/`rawPrediction` itu `SparseVector` — tidak bisa
+- Kolom `probability`/`rawPrediction` itu `SparseVector` tidak bisa
   di-index langsung lewat SQL.
 
 ## Log / bukti
