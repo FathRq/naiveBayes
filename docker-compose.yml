@@ -1,6 +1,7 @@
 version: '3.8'
 
 services:
+
   # ==========================================
   # 1. HADOOP HDFS CLUSTER (Apache Hadoop 3.4.3)
   # ==========================================
@@ -20,7 +21,7 @@ services:
       - HDFS-SITE.XML_dfs.permissions.enabled=false
     volumes:
       - hadoop_namenode:/tmp/hadoop-root/dfs/name
-      - ./data:/data # Folder lokal Windows (./data) otomatis terhubung ke /data di container
+      - ./data:/data # Folder lokal (./data) otomatis terhubung ke /data di container
     networks:
       - bigdata-net
 
@@ -117,6 +118,28 @@ services:
       - "27017:27017"
     volumes:
       - mongodb_data:/data/db
+    networks:
+      - bigdata-net
+
+  # ==========================================
+  # 4. DASHBOARD WEB (Tailwind + Flask API)
+  #    Membaca hasil dari MongoDB (fallback:
+  #    file data/analisis/ringkasan_analisis.json)
+  # ==========================================
+  web:
+    build: ./web
+    container_name: web-dashboard
+    hostname: web
+    ports:
+      - "5000:5000" # Dashboard: http://localhost:5000
+    environment:
+      - MONGO_URI=mongodb://mongodb:27017
+      - MONGO_DB=proyek_bigdata
+      - FALLBACK_JSON=/fallback/ringkasan_analisis.json
+    volumes:
+      - ./data/analisis:/fallback:ro # file fallback ringkasan (read-only)
+    depends_on:
+      - mongodb
     networks:
       - bigdata-net
 
