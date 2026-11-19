@@ -10,8 +10,11 @@ kategori (**hiburan, olahraga, teknologi, politik, ekonomi**) pakai
 **Naive Bayes (multinomial)** dari **Spark MLlib**. Alurnya:
 
 ```
-HDFS (data mentah) -> Spark (bersih) -> MLlib (Naive Bayes) -> Evaluasi -> MongoDB (NoSQL) -> Artikel
+Scraping ANTARA (Python) -> HDFS (data mentah) -> Spark (bersih) -> MLlib (Naive Bayes) -> Evaluasi -> MongoDB (NoSQL) -> Artikel
 ```
+
+Datasetnya bukan data siap pakai. Saya kumpulkan sendiri dari antaranews.com
+pakai `scrapping_data.py`, detailnya di bagian Tahap 0 di bawah.
 
 Hasil akhirnya **akurasi 91,27%** (skenario dedup, yang bebas-leakage). Model
 saya latih dari nol (`NaiveBayes.fit`) dengan 100% parameter default
@@ -21,6 +24,46 @@ tidak ada tuning.
 README ini saya tulis sebagai info untuk kamu (dan tim): cara setup clusternya,
 cara run skripnya, dan khusus untuk yang pegang NoSQL apa yang sudah saya
 siapkan dan apa yang perlu kamu kerjakan.
+
+## Tahap 0: Kumpulkan data (scraping)
+
+Sebelum masuk ke HDFS, datanya saya kumpulkan sendiri dari situs resmi ANTARA
+News (antaranews.com) dengan skrip `scrapping_data.py`. Skrip ini jalan di
+mesin lokal (Python biasa, bukan di dalam Docker), jadi satu-satunya tahap
+yang tidak pakai cluster.
+
+Cara jalankan:
+
+```bash
+pip install requests beautifulsoup4 lxml
+python scrapping_data.py --contact emailkamu@mhs.unesa.ac.id --delay 0.5 --workers 4
+```
+
+Ganti `--contact` dengan email aslimu. Email itu masuk ke User-Agent supaya
+pengelola situs bisa menghubungimu kalau ada masalah.
+
+Skripnya bekerja dalam 2 fase:
+
+1. RSS resmi per kanal (ambil berita terbaru)
+2. Crawl halaman indeks per kategori (politik, ekonomi, olahraga, teknologi,
+   hiburan), round-robin antar kelas supaya datanya seimbang
+
+Beberapa hal yang saya buat di skrip ini:
+
+- Etis: patuh robots.txt (termasuk Crawl-delay), rate-limiter global,
+  backoff otomatis saat HTTP 429/503, dan berhenti aman kalau terdeteksi
+  diblokir (401/403 beruntun). Tidak login, tidak lewat paywall.
+- Bisa di-resume: stop kapan saja dengan Ctrl+C, progres tersimpan di
+  checkpoint (CSV + state.json). Jalankan perintah yang sama untuk
+  melanjutkan.
+- Finalize: setelah pengumpulan selesai, skrip dedup URL dan menyeimbangkan
+  kelas, lalu menulis `berita_antara_final.csv` (UTF-8, siap dibaca Spark)
+  dan `metadata_pengumpulan.json`. Kalau cuma mau mengekspor ulang tanpa
+  crawl baru: `python scrapping_data.py --only-finalize`.
+
+Output default skrip ada di folder `data_berita/` (CSV mentah, CSV final,
+state, log). File `berita_antara_final.csv` di root folder proyek adalah
+hasil dari proses ini (33.830 artikel, 9 kolom).
 
 ## Clusternya: 7 container
 
@@ -65,8 +108,9 @@ di mesin dengan RAM 11 GB. Data TF-IDF-nya sparse, jadi 1G cukup.
    docker exec -u root namenode hdfs dfs -put /tmp/dataset.csv /proyek_bigdata/raw/dataset.csv
    docker exec -u root namenode hdfs dfs -ls /proyek_bigdata/raw/
    ```
-   (File `berita_antara_final.csv` tidak ikut di-commit karena besar, jadi
-   pastikan kamu punya salinannya di root folder.)
+   (File `berita_antara_final.csv` tidak ikut di-commit karena besar. File
+   ini hasil Tahap 0, kalau belum ada jalankan `scrapping_data.py` dulu atau
+   minta salinannya ke saya.)
 
 5. Install dependensi Python di spark-master:
    ```bash
@@ -137,7 +181,7 @@ HDFS:
 
 ```
 /proyek_bigdata/
-├── raw/dataset.csv                      # dataset mentah (82,6 MB)
+├── raw/dataset.csv                      # dataset mentah, hasil scraping (82,6 MB)
 ├── clean/berita_clean.parquet           # data bersih (33.776 baris)
 ├── prediksi/berita_prediksi.parquet     # hasil prediksi skenario RAW
 ├── prediksi/berita_prediksi_dedup.parquet  # hasil prediksi skenario DEDUP
@@ -220,6 +264,7 @@ Skema dokumen:
 | RAM penuh / OOM | tutup aplikasi berat; worker sudah 1G, bisa diturun ke 512M di `docker-compose.yml` |
 | `spark-submit` tidak menemukan skrip | pastikan file ada di `scripts/` (folder itu ter-mount ke `/scripts` di container) |
 | Port 9870/8080/27017 bentrok | ubah mapping port di `docker-compose.yml` |
+| Scraper berhenti sendiri (AbortCrawl) | kemungkinan diblokir; tunggu dulu, lalu re-run dengan `--delay` lebih besar (mis. 1.0) |
 
 Beberapa jebakan yang saya temui, biar kamu tidak jatuh ke yang sama:
 - Python di container Spark itu 3.8/3.9 jangan pakai backslash di f-string,

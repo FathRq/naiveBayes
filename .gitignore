@@ -2,6 +2,9 @@
 berita_antara_final.csv
 *.csv
 
+# Output scraper (CSV mentah bisa >80 MB)
+data_berita/
+
 # Panduan (PDF)
 *.pdf
 
