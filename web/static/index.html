@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Klasifikasi Berita Indonesia — Naive Bayes (Spark MLlib)</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen">
+
+<!-- ================= HEADER ================= -->
+<header class="bg-gradient-to-r from-indigo-900 via-indigo-800 to-sky-800 text-white">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <p class="text-sky-300 text-sm font-semibold tracking-widest uppercase">Proyek Akhir Big Data 2026 &middot; Topik 4 &middot; S1 Informatika UNESA</p>
+    <h1 class="text-3xl md:text-4xl font-bold mt-2">Klasifikasi Berita Indonesia Menggunakan Naive Bayes pada Spark MLlib</h1>
+    <p class="mt-3 text-indigo-100 max-w-3xl">Mengklasifikasikan 33.000+ artikel berita ANTARA ke 5 kategori
+      (<span class="font-semibold">hiburan, olahraga, teknologi, politik, ekonomi</span>) dengan
+      Naive Bayes (multinomial) + TF-IDF di Apache Spark, disimpan ke HDFS dan MongoDB (NoSQL).</p>
+    <!-- Pipeline arsitektur (Panduan Bab 3) -->
+    <div class="mt-6 flex flex-wrap items-center gap-2 text-xs md:text-sm font-medium">
+      <span class="bg-white/10 rounded-full px-3 py-1.5">Scraping ANTARA</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-white/10 rounded-full px-3 py-1.5">HDFS</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-white/10 rounded-full px-3 py-1.5">Apache Spark</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-white/10 rounded-full px-3 py-1.5">Spark MLlib (Naive Bayes)</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-white/10 rounded-full px-3 py-1.5">Evaluasi</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-white/10 rounded-full px-3 py-1.5">MongoDB (NoSQL)</span><span class="text-sky-300">&#8594;</span>
+      <span class="bg-amber-400 text-slate-900 rounded-full px-3 py-1.5">Dashboard Web</span>
+    </div>
+    <p class="mt-4 text-sm"><span class="text-indigo-200">Sumber data dashboard:</span>
+      <span id="status-sumber" class="inline-block bg-emerald-400/90 text-slate-900 font-semibold rounded px-2 py-0.5">memuat&hellip;</span>
+      <span id="status-mongo" class="ml-2 text-indigo-200"></span>
+    </p>
+  </div>
+</header>
+
+<main class="max-w-7xl mx-auto px-4 py-8 space-y-8">
+
+  <!-- ================= KPI ================= -->
+  <section class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+    <div class="bg-white rounded-2xl shadow p-5">
+      <p class="text-sm text-slate-500">Akurasi Resmi (DEDUP)</p>
+      <p id="kpi-akurasi" class="text-3xl font-bold text-indigo-700 mt-1">–</p>
+      <p class="text-xs text-slate-400 mt-1">bebas-leakage, skenario resmi proyek</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow p-5">
+      <p class="text-sm text-slate-500">Total Artikel (setelah dedup)</p>
+      <p id="kpi-total" class="text-3xl font-bold text-indigo-700 mt-1">–</p>
+      <p id="kpi-dedup-note" class="text-xs text-slate-400 mt-1"></p>
+    </div>
+    <div class="bg-white rounded-2xl shadow p-5">
+      <p class="text-sm text-slate-500">Weighted F1 (DEDUP)</p>
+      <p id="kpi-f1" class="text-3xl font-bold text-indigo-700 mt-1">–</p>
+      <p class="text-xs text-slate-400 mt-1">precision &amp; recall tertimbang di KPI bawah</p>
+    </div>
+    <div class="bg-white rounded-2xl shadow p-5">
+      <p class="text-sm text-slate-500">Dokumen Prediksi di MongoDB</p>
+      <p id="kpi-mongo" class="text-3xl font-bold text-indigo-700 mt-1">–</p>
+      <p class="text-xs text-slate-400 mt-1">collection <code>berita_prediksi</code> (skenario dedup)</p>
+    </div>
+  </section>
+
+  <!-- ================= DATASET ================= -->
+  <section class="bg-white rounded-2xl shadow p-6">
+    <h2 class="text-xl font-bold">Dataset — ANTARA News</h2>
+    <p class="text-sm text-slate-500 mt-1">Dataset dikumpulkan sendiri dengan web scraping etis dari antaranews.com
+      (<code>scrapping_data.py</code>), disimpan mentah ke HDFS, dibersihkan dengan Spark
+      (33.776 baris bersih, 0 NULL), lalu dibuang 221 near-duplikat untuk skenario DEDUP.</p>
+    <div class="grid md:grid-cols-5 gap-6 mt-4">
+      <div class="md:col-span-3"><canvas id="chart-kelas" height="220"></canvas></div>
+      <div class="md:col-span-2 text-sm space-y-2" id="dataset-detail"></div>
+    </div>
+  </section>
+
+  <!-- ================= EVALUASI ================= -->
+  <section class="bg-white rounded-2xl shadow p-6">
+    <div class="flex flex-wrap items-center justify-between gap-3">
+      <div>
+        <h2 class="text-xl font-bold">Evaluasi Model — Eksperimen RAW vs DEDUP</h2>
+        <p class="text-sm text-slate-500 mt-1">Dua skenario dijalankan dengan pipeline yang sama persis
+          (Tokenizer &#8594; HashingTF 100.000 &#8594; IDF &#8594; NaiveBayes multinomial, parameter default, split 80/20 seed 42).
+          Selisih akurasi yang kecil membuktikan angka resmi tidak tergelembung oleh near-duplikat.</p>
+      </div>
+      <div class="flex rounded-lg overflow-hidden border text-sm font-semibold">
+        <button data-skenario="dedup" class="btn-skenario px-4 py-2 bg-indigo-600 text-white">DEDUP (resmi)</button>
+        <button data-skenario="raw" class="btn-skenario px-4 py-2 bg-white text-slate-600">RAW</button>
+      </div>
+    </div>
+    <div class="grid md:grid-cols-2 gap-6 mt-5">
+      <div><canvas id="chart-skenario" height="240"></canvas></div>
+      <div>
+        <h3 class="font-semibold mb-2">Metrik per Kategori — <span id="label-skenario">DEDUP</span></h3>
+        <div class="overflow-x-auto">
+          <table class="w-full text-sm">
+            <thead><tr class="text-left text-slate-500 border-b">
+              <th class="py-2">Kategori</th><th>Precision</th><th>Recall</th><th>F1-score</th>
+            </tr></thead>
+            <tbody id="tabel-metrik"></tbody>
+          </table>
+        </div>
+        <p id="perbandingan-note" class="text-sm bg-indigo-50 border border-indigo-100 rounded-lg p-3 mt-4"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= CONFUSION MATRIX + INTERPRETASI ================= -->
+  <section class="grid lg:grid-cols-2 gap-8">
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h2 class="text-xl font-bold">Confusion Matrix — <span id="label-cm">DEDUP</span></h2>
+      <p class="text-sm text-slate-500 mt-1">Baris = kategori sebenarnya, kolom = hasil prediksi. Diagonal = prediksi benar.</p>
+      <div class="overflow-x-auto mt-4"><table class="text-sm w-full" id="tabel-cm"></table></div>
+    </div>
+    <div class="bg-white rounded-2xl shadow p-6">
+      <h2 class="text-xl font-bold">Interpretasi Hasil</h2>
+      <p id="interpretasi" class="text-sm leading-relaxed mt-3"></p>
+      <div class="grid grid-cols-2 gap-3 mt-4 text-sm">
+        <div class="bg-emerald-50 border border-emerald-100 rounded-lg p-3">
+          <p class="text-slate-500">Kategori terkuat</p>
+          <p id="terkuat" class="font-bold text-emerald-700 text-lg">–</p>
+        </div>
+        <div class="bg-rose-50 border border-rose-100 rounded-lg p-3">
+          <p class="text-slate-500">Kategori terlemah</p>
+          <p id="terlemah" class="font-bold text-rose-700 text-lg">–</p>
+        </div>
+      </div>
+      <p class="text-sm mt-4"><span class="text-slate-500">Paling sering salah:</span>
+        <span id="sering-salah" class="font-semibold"></span></p>
+      <h3 class="font-semibold mt-6">Model</h3>
+      <div id="model-detail" class="text-sm text-slate-600 mt-1 space-y-1"></div>
+    </div>
+  </section>
+
+  <!-- ================= NOSQL ================= -->
+  <section class="bg-white rounded-2xl shadow p-6">
+    <h2 class="text-xl font-bold">NoSQL — MongoDB</h2>
+    <p class="text-sm text-slate-500 mt-1">Sesuai Panduan 6.D, hasil Spark MLlib disimpan sebagai dokumen JSON di MongoDB
+      (database <code>proyek_bigdata</code>) dan dibaca kembali oleh dashboard ini:
+      <code>ringkasan_analisis</code> (1 dokumen) dan <code>berita_prediksi</code> (prediksi per artikel, skenario DEDUP).</p>
+    <div id="nosql-offline" class="hidden mt-4 text-sm bg-amber-50 border border-amber-200 rounded-lg p-3"></div>
+    <div class="grid md:grid-cols-2 gap-6 mt-4">
+      <div>
+        <h3 class="font-semibold mb-2">Distribusi Kategori Prediksi (agregasi MongoDB)</h3>
+        <canvas id="chart-distribusi" height="220"></canvas>
+      </div>
+      <div>
+        <h3 class="font-semibold mb-2">Pasangan Salah Prediksi Terbanyak</h3>
+        <div id="pasangan-salah" class="space-y-2 text-sm"></div>
+        <p class="text-sm mt-4"><span class="text-slate-500">Akurasi dihitung ulang dari MongoDB:</span>
+          <span id="akurasi-mongo" class="font-bold text-indigo-700"></span></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ================= EXPLORER PREDIKSI ================= -->
+  <section class="bg-white rounded-2xl shadow p-6">
+    <h2 class="text-xl font-bold">Jelajahi Hasil Prediksi per Artikel</h2>
+    <p class="text-sm text-slate-500 mt-1">Data dibaca langsung dari collection <code>berita_prediksi</code> di MongoDB lewat API backend.</p>
+    <div class="flex flex-wrap gap-3 mt-4 text-sm">
+      <label>Kategori asli
+        <select id="f-kategori" class="ml-1 border rounded-lg px-2 py-1.5">
+          <option value="">Semua</option>
+        </select></label>
+      <label>Prediksi
+        <select id="f-prediksi" class="ml-1 border rounded-lg px-2 py-1.5">
+          <option value="">Semua</option>
+        </select></label>
+      <label>Status
+        <select id="f-benar" class="ml-1 border rounded-lg px-2 py-1.5">
+          <option value="">Semua</option>
+          <option value="true">Benar</option>
+          <option value="false">Salah</option>
+        </select></label>
+      <span id="prediksi-total" class="ml-auto self-center text-slate-500"></span>
+    </div>
+    <div class="overflow-x-auto mt-3">
+      <table class="w-full text-sm">
+        <thead><tr class="text-left text-slate-500 border-b">
+          <th class="py-2">ID Artikel</th><th>Kategori Asli</th><th>Kategori Prediksi</th>
+          <th>Model</th><th>Sumber</th><th>Status</th>
+        </tr></thead>
+        <tbody id="tabel-prediksi"></tbody>
+      </table>
+    </div>
+    <div class="flex items-center gap-3 mt-4 text-sm">
+      <button id="btn-prev" class="border rounded-lg px-3 py-1.5 hover:bg-slate-50">&#8592; Sebelumnya</button>
+      <span id="halaman-info"></span>
+      <button id="btn-next" class="border rounded-lg px-3 py-1.5 hover:bg-slate-50">Berikutnya &#8594;</button>
+    </div>
+  </section>
+
+  <footer class="text-center text-xs text-slate-400 pb-6">
+    Arsitektur: Scraping ANTARA &#8594; HDFS &#8594; Apache Spark &#8594; Spark MLlib (Naive Bayes) &#8594; Evaluasi &#8594; MongoDB &#8594; Dashboard Web (Tailwind + Flask API)
+  </footer>
+</main>
+
+<script src="/static/app.js"></script>
+</body>
+</html>
