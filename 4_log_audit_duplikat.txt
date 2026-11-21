@@ -1,0 +1,86 @@
+26/11/21 15:11:01 INFO SparkContext: Running Spark version 3.5.6
+26/11/21 15:11:01 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/21 15:11:01 INFO SparkContext: Java version 11.0.27
+26/11/21 15:11:01 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/21 15:11:01 INFO ResourceUtils: ==============================================================
+26/11/21 15:11:01 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/21 15:11:01 INFO ResourceUtils: ==============================================================
+26/11/21 15:11:01 INFO SparkContext: Submitted application: AuditIntegritasData
+26/11/21 15:11:01 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/21 15:11:01 INFO ResourceProfile: Limiting resource is cpu
+26/11/21 15:11:01 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/21 15:11:01 INFO SecurityManager: Changing view acls to: spark
+26/11/21 15:11:01 INFO SecurityManager: Changing modify acls to: spark
+26/11/21 15:11:01 INFO SecurityManager: Changing view acls groups to: 
+26/11/21 15:11:01 INFO SecurityManager: Changing modify acls groups to: 
+26/11/21 15:11:01 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/21 15:11:01 INFO Utils: Successfully started service 'sparkDriver' on port 34923.
+26/11/21 15:11:02 INFO SparkEnv: Registering MapOutputTracker
+26/11/21 15:11:02 INFO SparkEnv: Registering BlockManagerMaster
+26/11/21 15:11:02 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/21 15:11:02 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/21 15:11:02 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/21 15:11:02 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-a968fccb-d026-44d8-bedf-88a6aa963a32
+26/11/21 15:11:02 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/21 15:11:02 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/21 15:11:02 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/21 15:11:02 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/21 15:11:02 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/21 15:11:02 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.3:7077 after 25 ms (0 ms spent in bootstraps)
+26/11/21 15:11:02 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261121151102-0007
+26/11/21 15:11:02 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151102-0007/0 on worker-20261121122026-172.21.0.6-37591 (172.21.0.6:37591) with 2 core(s)
+26/11/21 15:11:02 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151102-0007/0 on hostPort 172.21.0.6:37591 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:11:02 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151102-0007/1 on worker-20261121122026-172.21.0.5-36211 (172.21.0.5:36211) with 2 core(s)
+26/11/21 15:11:02 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151102-0007/1 on hostPort 172.21.0.5:36211 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:11:02 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 35131.
+26/11/21 15:11:02 INFO NettyBlockTransferService: Server created on spark-master:35131
+26/11/21 15:11:02 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/21 15:11:02 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 35131, None)
+26/11/21 15:11:02 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:35131 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 35131, None)
+26/11/21 15:11:02 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 35131, None)
+26/11/21 15:11:02 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 35131, None)
+26/11/21 15:11:02 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151102-0007/1 is now RUNNING
+26/11/21 15:11:02 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151102-0007/0 is now RUNNING
+26/11/21 15:11:02 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+Total baris: 33776
+
+=== [0] Distribusi nama_media ===
++-----------+-----+
+| nama_media|count|
++-----------+-----+
+|ANTARA News|33776|
++-----------+-----+
+
+=== [1] Duplikat PERSIS judul ===
+Jumlah judul unik yang kembar : 0
+=== [2] Duplikat PERSIS isi_artikel ===
+Jumlah isi yang kembar persis : 3
++------------------------------------------------------------+-----+
+|                                                 isi_artikel|count|
++------------------------------------------------------------+-----+
+|Dilarang keras mengambil konten, melakukan crawling atau ...|  103|
+|Penerjemah: Fitra Ashari Editor: Zita Meirina Copyright ©...|    7|
+|Penerjemah: Ida Nurcahyani Editor: Ade P Marboen Copyrigh...|    3|
++------------------------------------------------------------+-----+
+
+=== [3] NEAR-DUPLIKAT: 30 kata pertama identik ===
+Jumlah 'kepala' artikel yang kembar: 55
+Baris yang terlibat near-duplikat : 290  (0.9% dari data)
++----------------------------------------------------------------------+-----+
+|                                                                head30|count|
++----------------------------------------------------------------------+-----+
+|ihsg jumat dibuka menguat poin ke posisi indeks harga saham gabunga...|   15|
+|ihsg senin dibuka menguat poin indeks harga saham gabungan ihsg bur...|   15|
+|ihsg kamis dibuka menguat poin indeks harga saham gabungan ihsg bur...|   14|
+|ihsg senin dibuka menguat poin ke posisi indeks harga saham gabunga...|   13|
+|ihsg selasa dibuka menguat poin indeks harga saham gabungan ihsg bu...|   12|
+|ihsg selasa dibuka menguat poin ke posisi indeks harga saham gabung...|   12|
+|ihsg kamis dibuka menguat poin ke posisi indeks harga saham gabunga...|   11|
+|ihsg rabu dibuka menguat poin indeks harga saham gabungan ihsg burs...|   11|
++----------------------------------------------------------------------+-----+
+only showing top 8 rows
+
+
+=== [4] Ringkasan risiko ===
+Jika ada near-duplikat, randomSplit 80/20 akan memisahkan salinannya
+ke train & test -> model 'menghafal' -> akurasi test tergelembung.

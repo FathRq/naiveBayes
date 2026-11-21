@@ -1,0 +1,83 @@
+26/11/21 15:12:25 INFO SparkContext: Running Spark version 3.5.6
+26/11/21 15:12:25 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/21 15:12:25 INFO SparkContext: Java version 11.0.27
+26/11/21 15:12:25 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/21 15:12:25 INFO ResourceUtils: ==============================================================
+26/11/21 15:12:25 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/21 15:12:25 INFO ResourceUtils: ==============================================================
+26/11/21 15:12:25 INFO SparkContext: Submitted application: Eksperimen_Skala_Data
+26/11/21 15:12:25 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/21 15:12:25 INFO ResourceProfile: Limiting resource is cpu
+26/11/21 15:12:25 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/21 15:12:25 INFO SecurityManager: Changing view acls to: spark
+26/11/21 15:12:25 INFO SecurityManager: Changing modify acls to: spark
+26/11/21 15:12:25 INFO SecurityManager: Changing view acls groups to: 
+26/11/21 15:12:25 INFO SecurityManager: Changing modify acls groups to: 
+26/11/21 15:12:25 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/21 15:12:25 INFO Utils: Successfully started service 'sparkDriver' on port 43689.
+26/11/21 15:12:25 INFO SparkEnv: Registering MapOutputTracker
+26/11/21 15:12:25 INFO SparkEnv: Registering BlockManagerMaster
+26/11/21 15:12:25 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/21 15:12:25 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/21 15:12:25 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/21 15:12:25 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-baf2f0c9-74b8-4c26-bc8a-21e2b7c5ed6d
+26/11/21 15:12:25 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/21 15:12:25 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/21 15:12:26 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/21 15:12:26 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/21 15:12:26 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/21 15:12:26 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.3:7077 after 23 ms (0 ms spent in bootstraps)
+26/11/21 15:12:26 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261121151226-0009
+26/11/21 15:12:26 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151226-0009/0 on worker-20261121122026-172.21.0.6-37591 (172.21.0.6:37591) with 2 core(s)
+26/11/21 15:12:26 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151226-0009/0 on hostPort 172.21.0.6:37591 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:12:26 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151226-0009/1 on worker-20261121122026-172.21.0.5-36211 (172.21.0.5:36211) with 2 core(s)
+26/11/21 15:12:26 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151226-0009/1 on hostPort 172.21.0.5:36211 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:12:26 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 43129.
+26/11/21 15:12:26 INFO NettyBlockTransferService: Server created on spark-master:43129
+26/11/21 15:12:26 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/21 15:12:26 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 43129, None)
+26/11/21 15:12:26 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:43129 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 43129, None)
+26/11/21 15:12:26 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 43129, None)
+26/11/21 15:12:26 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 43129, None)
+26/11/21 15:12:26 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151226-0009/1 is now RUNNING
+26/11/21 15:12:26 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151226-0009/0 is now RUNNING
+26/11/21 15:12:26 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== MEMBACA & DEDUPLIKASI DATA (SKENARIO DEDUP) ===
+Total data DEDUP (100%): 33555 artikel
+
+--- Menguji Skala 25% ---
+26/11/21 15:13:02 WARN DAGScheduler: Broadcasting large task binary with size 1687.5 KiB
+26/11/21 15:13:14 WARN DAGScheduler: Broadcasting large task binary with size 1659.9 KiB
+26/11/21 15:13:16 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:13:21 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+  Artikel: 8434 | Waktu: 29.33s | Acc: 91.14% | F1: 0.9118
+--- Menguji Skala 50% ---
+26/11/21 15:13:32 WARN DAGScheduler: Broadcasting large task binary with size 1687.5 KiB
+26/11/21 15:13:40 WARN DAGScheduler: Broadcasting large task binary with size 1660.0 KiB
+26/11/21 15:13:42 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:13:45 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+  Artikel: 16733 | Waktu: 15.72s | Acc: 91.61% | F1: 0.9162
+--- Menguji Skala 75% ---
+26/11/21 15:13:53 WARN DAGScheduler: Broadcasting large task binary with size 1687.5 KiB
+26/11/21 15:14:00 WARN DAGScheduler: Broadcasting large task binary with size 1660.0 KiB
+26/11/21 15:14:02 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:14:06 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+  Artikel: 25026 | Waktu: 13.09s | Acc: 91.53% | F1: 0.9155
+--- Menguji Skala 100% ---
+26/11/21 15:14:12 WARN DAGScheduler: Broadcasting large task binary with size 1687.1 KiB
+26/11/21 15:14:19 WARN DAGScheduler: Broadcasting large task binary with size 1659.7 KiB
+26/11/21 15:14:21 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:14:27 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+  Artikel: 33555 | Waktu: 10.82s | Acc: 91.51% | F1: 0.9152
+
+=================================================================
+RINGKASAN TABEL VII (SKENARIO DEDUP)
+=================================================================
+Skala      Jumlah Artikel   Waktu (detik)    Accuracy     F1-Score  
+-----------------------------------------------------------------
+25%        8434             29.33            91.14%       0.9118    
+50%        16733            15.72            91.61%       0.9162    
+75%        25026            13.09            91.53%       0.9155    
+100%       33555            10.82            91.51%       0.9152    
+=================================================================

@@ -1,0 +1,80 @@
+26/11/21 15:15:30 INFO SparkContext: Running Spark version 3.5.6
+26/11/21 15:15:30 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/21 15:15:30 INFO SparkContext: Java version 11.0.27
+26/11/21 15:15:30 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/21 15:15:31 INFO ResourceUtils: ==============================================================
+26/11/21 15:15:31 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/21 15:15:31 INFO ResourceUtils: ==============================================================
+26/11/21 15:15:31 INFO SparkContext: Submitted application: BagianD_SparkKeMongoDB
+26/11/21 15:15:31 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/21 15:15:31 INFO ResourceProfile: Limiting resource is cpu
+26/11/21 15:15:31 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/21 15:15:31 INFO SecurityManager: Changing view acls to: spark
+26/11/21 15:15:31 INFO SecurityManager: Changing modify acls to: spark
+26/11/21 15:15:31 INFO SecurityManager: Changing view acls groups to: 
+26/11/21 15:15:31 INFO SecurityManager: Changing modify acls groups to: 
+26/11/21 15:15:31 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/21 15:15:31 INFO Utils: Successfully started service 'sparkDriver' on port 33157.
+26/11/21 15:15:31 INFO SparkEnv: Registering MapOutputTracker
+26/11/21 15:15:31 INFO SparkEnv: Registering BlockManagerMaster
+26/11/21 15:15:31 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/21 15:15:31 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/21 15:15:31 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/21 15:15:31 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-bcc88bc4-1f14-4a0d-b379-150b41dbf425
+26/11/21 15:15:31 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/21 15:15:31 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/21 15:15:31 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/21 15:15:31 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/21 15:15:32 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/21 15:15:32 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.3:7077 after 27 ms (0 ms spent in bootstraps)
+26/11/21 15:15:32 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261121151532-0010
+26/11/21 15:15:32 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 45201.
+26/11/21 15:15:32 INFO NettyBlockTransferService: Server created on spark-master:45201
+26/11/21 15:15:32 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/21 15:15:32 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151532-0010/0 on worker-20261121122026-172.21.0.6-37591 (172.21.0.6:37591) with 2 core(s)
+26/11/21 15:15:32 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151532-0010/0 on hostPort 172.21.0.6:37591 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:15:32 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151532-0010/1 on worker-20261121122026-172.21.0.5-36211 (172.21.0.5:36211) with 2 core(s)
+26/11/21 15:15:32 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151532-0010/1 on hostPort 172.21.0.5:36211 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:15:32 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 45201, None)
+26/11/21 15:15:32 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:45201 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 45201, None)
+26/11/21 15:15:32 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 45201, None)
+26/11/21 15:15:32 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 45201, None)
+26/11/21 15:15:32 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151532-0010/0 is now RUNNING
+26/11/21 15:15:32 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151532-0010/1 is now RUNNING
+26/11/21 15:15:32 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA HASIL PREDIKSI DARI HDFS ===
+Sumber: hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi_dedup.parquet (skenario DEDUP)
+Total dokumen yang akan disimpan: 6521
+
+=== 2. KONVERSI KE DOKUMEN JSON ===
+
+=== 3. OPERASI TULIS (INSERT) KE MONGODB ===
+Dokumen disisipkan: 6521
+
+=== 4. MEMBUAT INDEX ===
+  index: _id_ -> [('_id', 1)]
+  index: id_artikel_1 -> [('id_artikel', 1)]
+  index: kategori_prediksi_1 -> [('kategori_prediksi', 1)]
+  index: benar_1 -> [('benar', 1)]
+  index: kategori_1_kategori_prediksi_1 -> [('kategori', 1), ('kategori_prediksi', 1)]
+
+=== 5. OPERASI BACA (VERIFIKASI) ===
+Jumlah dokumen di collection : 6521
+Jumlah prediksi BENAR        : 5989
+Jumlah prediksi SALAH        : 532
+Akurasi dari MongoDB         : 0.9184
+
+1 dokumen sampel:
+{
+  "_id": "6b01b59c3729a9e9beb0c7ff",
+  "id_artikel": 383659,
+  "kategori": "teknologi",
+  "kategori_prediksi": "teknologi",
+  "model": "Naive Bayes (multinomial)",
+  "sumber": "Spark MLlib",
+  "skenario": "dedup",
+  "benar": true
+}
+
+Selesai. Data prediksi DEDUP berhasil dipindahkan dari HDFS (Spark) ke MongoDB.
