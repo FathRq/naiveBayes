@@ -48,41 +48,41 @@
         "seed": 42
       },
       "evaluasi": {
-        "accuracy": 0.9169,
-        "weighted_precision": 0.9182,
-        "weighted_recall": 0.9169,
-        "weighted_f1": 0.917
+        "accuracy": 0.9172,
+        "weighted_precision": 0.9184,
+        "weighted_recall": 0.9172,
+        "weighted_f1": 0.9173
       },
       "metrik_per_kategori": [
         {
           "kategori": "olahraga",
-          "precision": 0.9944,
-          "recall": 0.9751,
-          "f1": 0.9847
+          "precision": 0.9945,
+          "recall": 0.9767,
+          "f1": 0.9855
         },
         {
           "kategori": "hiburan",
-          "precision": 0.917,
-          "recall": 0.9436,
-          "f1": 0.9301
+          "precision": 0.9117,
+          "recall": 0.9408,
+          "f1": 0.926
         },
         {
           "kategori": "teknologi",
-          "precision": 0.9386,
-          "recall": 0.8599,
-          "f1": 0.8975
+          "precision": 0.9396,
+          "recall": 0.8649,
+          "f1": 0.9007
         },
         {
           "kategori": "ekonomi",
-          "precision": 0.8824,
-          "recall": 0.8982,
-          "f1": 0.8902
+          "precision": 0.8842,
+          "recall": 0.8993,
+          "f1": 0.8917
         },
         {
           "kategori": "politik",
-          "precision": 0.8635,
-          "recall": 0.9074,
-          "f1": 0.8849
+          "precision": 0.8668,
+          "recall": 0.9042,
+          "f1": 0.8851
         }
       ],
       "confusion_matrix": {
@@ -96,39 +96,39 @@
         ],
         "matriks": [
           [
-            1238,
+            1239,
             3,
-            28,
-            28,
+            27,
+            33,
             15
           ],
           [
-            15,
-            1253,
-            15,
+            14,
+            1255,
+            14,
             1,
             1
           ],
           [
-            21,
+            25,
             3,
-            1234,
-            23,
-            79
-          ],
-          [
-            52,
-            0,
-            60,
-            1086,
-            65
-          ],
-          [
-            24,
-            1,
-            92,
+            1217,
             19,
-            1200
+            82
+          ],
+          [
+            54,
+            0,
+            55,
+            1088,
+            61
+          ],
+          [
+            27,
+            1,
+            91,
+            17,
+            1214
           ]
         ]
       }
@@ -142,41 +142,41 @@
         "seed": 42
       },
       "evaluasi": {
-        "accuracy": 0.9127,
-        "weighted_precision": 0.9138,
-        "weighted_recall": 0.9127,
-        "weighted_f1": 0.9128
+        "accuracy": 0.9184,
+        "weighted_precision": 0.9198,
+        "weighted_recall": 0.9184,
+        "weighted_f1": 0.9185
       },
       "metrik_per_kategori": [
         {
           "kategori": "olahraga",
-          "precision": 0.9953,
-          "recall": 0.9808,
-          "f1": 0.988
+          "precision": 0.9954,
+          "recall": 0.9841,
+          "f1": 0.9897
         },
         {
           "kategori": "hiburan",
-          "precision": 0.9164,
-          "recall": 0.9393,
-          "f1": 0.9277
-        },
-        {
-          "kategori": "teknologi",
-          "precision": 0.925,
-          "recall": 0.8519,
-          "f1": 0.8869
+          "precision": 0.9315,
+          "recall": 0.9432,
+          "f1": 0.9373
         },
         {
           "kategori": "ekonomi",
-          "precision": 0.8675,
-          "recall": 0.8965,
-          "f1": 0.8817
+          "precision": 0.8914,
+          "recall": 0.8941,
+          "f1": 0.8927
+        },
+        {
+          "kategori": "teknologi",
+          "precision": 0.9296,
+          "recall": 0.8511,
+          "f1": 0.8886
         },
         {
           "kategori": "politik",
-          "precision": 0.8646,
-          "recall": 0.8949,
-          "f1": 0.8795
+          "precision": 0.849,
+          "recall": 0.9148,
+          "f1": 0.8807
         }
       ],
       "confusion_matrix": {
@@ -190,52 +190,52 @@
         ],
         "matriks": [
           [
-            1238,
-            0,
-            43,
-            22,
-            15
+            1279,
+            1,
+            39,
+            21,
+            16
           ],
           [
-            11,
-            1277,
-            3,
-            10,
+            8,
+            1303,
+            0,
+            12,
             1
           ],
           [
-            54,
-            1,
-            1110,
-            69,
+            53,
+            2,
+            1069,
+            77,
+            55
+          ],
+          [
+            20,
+            2,
+            19,
+            1181,
             69
           ],
           [
-            26,
-            3,
-            18,
-            1175,
-            91
-          ],
-          [
-            22,
-            2,
-            26,
-            83,
-            1152
+            13,
+            1,
+            23,
+            100,
+            1157
           ]
         ]
       }
     },
     "perbandingan": {
-      "selisih_accuracy": 0.0042,
+      "selisih_accuracy": 0.0012,
       "kesimpulan": "Selisih < 1%: akurasi TIDAK tergelembung oleh near-duplikat; angka DEDUP sah sebagai angka resmi (bebas-leakage)."
     }
   },
   "interpretasi": {
-    "ringkasan": "Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.27% pada 6521 artikel uji (skenario DEDUP, bebas-leakage). Kategori 'olahraga' terklasifikasi paling baik (F1=0.988), sedangkan 'politik' paling menantang (F1=0.8795). Kesalahan terbesar: berita 'politik' ditebak 'ekonomi' (91 artikel), yang masuk akal karena kedua topik sering beririsan.",
+    "ringkasan": "Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.84% pada 6521 artikel uji (skenario DEDUP, bebas-leakage). Kategori 'olahraga' terklasifikasi paling baik (F1=0.9897), sedangkan 'politik' paling menantang (F1=0.8807). Kesalahan terbesar: berita 'ekonomi' ditebak 'politik' (100 artikel), yang masuk akal karena kedua topik sering beririsan.",
     "kategori_terkuat": "olahraga",
     "kategori_terlemah": "politik",
-    "paling_sering_salah": "politik -> ekonomi (91 artikel)"
+    "paling_sering_salah": "ekonomi -> politik (100 artikel)"
   }
 }

@@ -1,0 +1,375 @@
+26/11/21 15:06:12 INFO SparkContext: Running Spark version 3.5.6
+26/11/21 15:06:12 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/21 15:06:12 INFO SparkContext: Java version 11.0.27
+26/11/21 15:06:12 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/21 15:06:12 INFO ResourceUtils: ==============================================================
+26/11/21 15:06:12 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/21 15:06:12 INFO ResourceUtils: ==============================================================
+26/11/21 15:06:12 INFO SparkContext: Submitted application: MLlib_NaiveBayes_LENGKAP
+26/11/21 15:06:12 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/21 15:06:12 INFO ResourceProfile: Limiting resource is cpu
+26/11/21 15:06:12 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/21 15:06:12 INFO SecurityManager: Changing view acls to: spark
+26/11/21 15:06:12 INFO SecurityManager: Changing modify acls to: spark
+26/11/21 15:06:12 INFO SecurityManager: Changing view acls groups to: 
+26/11/21 15:06:12 INFO SecurityManager: Changing modify acls groups to: 
+26/11/21 15:06:12 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/21 15:06:13 INFO Utils: Successfully started service 'sparkDriver' on port 39631.
+26/11/21 15:06:13 INFO SparkEnv: Registering MapOutputTracker
+26/11/21 15:06:13 INFO SparkEnv: Registering BlockManagerMaster
+26/11/21 15:06:13 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/21 15:06:13 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/21 15:06:13 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/21 15:06:13 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-05e4e771-b97e-4c14-9d9d-76c2b628cc57
+26/11/21 15:06:13 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/21 15:06:13 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/21 15:06:13 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/21 15:06:13 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/21 15:06:13 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/21 15:06:13 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.3:7077 after 26 ms (0 ms spent in bootstraps)
+26/11/21 15:06:13 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261121150613-0006
+26/11/21 15:06:13 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 36563.
+26/11/21 15:06:13 INFO NettyBlockTransferService: Server created on spark-master:36563
+26/11/21 15:06:13 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/21 15:06:13 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121150613-0006/0 on worker-20261121122026-172.21.0.6-37591 (172.21.0.6:37591) with 2 core(s)
+26/11/21 15:06:13 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121150613-0006/0 on hostPort 172.21.0.6:37591 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:06:13 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121150613-0006/1 on worker-20261121122026-172.21.0.5-36211 (172.21.0.5:36211) with 2 core(s)
+26/11/21 15:06:13 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121150613-0006/1 on hostPort 172.21.0.5:36211 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:06:13 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 36563, None)
+26/11/21 15:06:13 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:36563 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 36563, None)
+26/11/21 15:06:13 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 36563, None)
+26/11/21 15:06:13 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 36563, None)
+26/11/21 15:06:14 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121150613-0006/0 is now RUNNING
+26/11/21 15:06:14 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121150613-0006/1 is now RUNNING
+26/11/21 15:06:14 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA DATA ===
+Total baris (raw) : 33776
+
+=== 2. SKENARIO A: RAW (tanpa dedup) ===
+
+--- Skenario: RAW ---
+26/11/21 15:06:32 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+26/11/21 15:06:35 WARN DAGScheduler: Broadcasting large task binary with size 1638.7 KiB
+26/11/21 15:06:39 WARN DAGScheduler: Broadcasting large task binary with size 1666.8 KiB
+26/11/21 15:06:43 WARN DAGScheduler: Broadcasting large task binary with size 1637.6 KiB
+26/11/21 15:06:43 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:06:47 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:06:47 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:06:51 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:06:54 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:06:57 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:00 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:03 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:05 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:08 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:10 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:13 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:13 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:16 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:19 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:21 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:24 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:26 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:28 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:31 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:33 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:33 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:07:34 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+  baris train=27220  test=6556  accuracy=0.9172
+26/11/21 15:07:34 WARN DAGScheduler: Broadcasting large task binary with size 5.6 MiB
+  Prediksi RAW disimpan : hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi.parquet
+
+=== 3. SKENARIO B: DEDUP (buang near-duplikat) ===
+Total baris (dedup) : 33555  (dibuang 221 near-duplikat)
+
+--- Skenario: DEDUP ---
+26/11/21 15:07:41 WARN DAGScheduler: Broadcasting large task binary with size 1649.8 KiB
+26/11/21 15:07:44 WARN DAGScheduler: Broadcasting large task binary with size 1649.8 KiB
+26/11/21 15:07:47 WARN DAGScheduler: Broadcasting large task binary with size 1677.4 KiB
+26/11/21 15:07:49 WARN DAGScheduler: Broadcasting large task binary with size 1646.2 KiB
+26/11/21 15:07:50 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:07:53 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:07:55 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:07:58 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:01 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:03 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:06 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:08 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:08 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:11 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:13 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:16 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:18 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:21 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:23 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:26 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:28 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:31 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:33 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:36 WARN DAGScheduler: Broadcasting large task binary with size 5.5 MiB
+26/11/21 15:08:40 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:08:36 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+26/11/21 15:08:36 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+  baris train=27034  test=6521  accuracy=0.9184
+26/11/21 15:08:37 WARN DAGScheduler: Broadcasting large task binary with size 5.6 MiB
+  Prediksi DEDUP disimpan: hdfs://namenode:9000/proyek_bigdata/prediksi/berita_prediksi_dedup.parquet
+26/11/21 15:08:39 WARN TaskSetManager: Stage 191 contains a task of very large size (3995 KiB). The maximum recommended task size is 1000 KiB.
+  Model DEDUP disimpan   : hdfs://namenode:9000/proyek_bigdata/model/naive_bayes_model
+
+=== 4. PERBANDINGAN RAW vs DEDUP ===
+  RAW   : 91.72%
+  DEDUP : 91.84%
+  Selisih: 0.12 poin
+  -> Selisih < 1%: akurasi TIDAK tergelembung oleh near-duplikat; angka DEDUP sah sebagai angka resmi (bebas-leakage).
+
+=== 5. BANGUN DOKUMEN JSON ===
+{
+  "proyek": {
+    "judul": "Klasifikasi Berita Indonesia Menggunakan Naive Bayes pada Spark MLlib",
+    "topik": "Klasifikasi berita Indonesia (Topik 4)",
+    "algoritma": "Naive Bayes (multinomial)",
+    "sumber": "Spark MLlib",
+    "arsitektur": "HDFS -> Spark -> Spark MLlib -> Evaluasi -> NoSQL (MongoDB)"
+  },
+  "dataset": {
+    "nama_file": "berita_antara_final.csv",
+    "sumber": "ANTARA News",
+    "total_baris_raw": 33776,
+    "total_baris_dedup": 33555,
+    "near_duplikat_dibuang": 221,
+    "kategori": [
+      "hiburan",
+      "olahraga",
+      "teknologi",
+      "politik",
+      "ekonomi"
+    ],
+    "keseimbangan_kelas": {
+      "teknologi": 6763,
+      "olahraga": 6766,
+      "hiburan": 6766,
+      "ekonomi": 6498,
+      "politik": 6762
+    }
+  },
+  "model": {
+    "nama": "Naive Bayes",
+    "tipe": "multinomial",
+    "parameter": {
+      "smoothing": 1.0,
+      "modelType": "multinomial"
+    },
+    "fitur": "TF-IDF: Tokenizer -> HashingTF(100000) -> IDF",
+    "fitur_dari": "teks_bersih (judul + isi)",
+    "catatan": "Model dilatih dari nol (fit); 100% parameter default, tanpa tuning"
+  },
+  "eksperimen": {
+    "skenario": "RAW vs DEDUP (uji kebocoran near-duplikat)",
+    "raw": {
+      "total_baris": 33776,
+      "split": {
+        "train": 27220,
+        "test": 6556,
+        "seed": 42
+      },
+      "evaluasi": {
+        "accuracy": 0.9172,
+        "weighted_precision": 0.9184,
+        "weighted_recall": 0.9172,
+        "weighted_f1": 0.9173
+      },
+      "metrik_per_kategori": [
+        {
+          "kategori": "olahraga",
+          "precision": 0.9945,
+          "recall": 0.9767,
+          "f1": 0.9855
+        },
+        {
+          "kategori": "hiburan",
+          "precision": 0.9117,
+          "recall": 0.9408,
+          "f1": 0.926
+        },
+        {
+          "kategori": "teknologi",
+          "precision": 0.9396,
+          "recall": 0.8649,
+          "f1": 0.9007
+        },
+        {
+          "kategori": "ekonomi",
+          "precision": 0.8842,
+          "recall": 0.8993,
+          "f1": 0.8917
+        },
+        {
+          "kategori": "politik",
+          "precision": 0.8668,
+          "recall": 0.9042,
+          "f1": 0.8851
+        }
+      ],
+      "confusion_matrix": {
+        "keterangan": "baris=sebenarnya, kolom=prediksi",
+        "label": [
+          "hiburan",
+          "olahraga",
+          "politik",
+          "teknologi",
+          "ekonomi"
+        ],
+        "matriks": [
+          [
+            1239,
+            3,
+            27,
+            33,
+            15
+          ],
+          [
+            14,
+            1255,
+            14,
+            1,
+            1
+          ],
+          [
+            25,
+            3,
+            1217,
+            19,
+            82
+          ],
+          [
+            54,
+            0,
+            55,
+            1088,
+            61
+          ],
+          [
+            27,
+            1,
+            91,
+            17,
+            1214
+          ]
+        ]
+      }
+    },
+    "dedup": {
+      "total_baris": 33555,
+      "near_duplikat_dibuang": 221,
+      "split": {
+        "train": 27034,
+        "test": 6521,
+        "seed": 42
+      },
+      "evaluasi": {
+        "accuracy": 0.9184,
+        "weighted_precision": 0.9198,
+        "weighted_recall": 0.9184,
+        "weighted_f1": 0.9185
+      },
+      "metrik_per_kategori": [
+        {
+          "kategori": "olahraga",
+          "precision": 0.9954,
+          "recall": 0.9841,
+          "f1": 0.9897
+        },
+        {
+          "kategori": "hiburan",
+          "precision": 0.9315,
+          "recall": 0.9432,
+          "f1": 0.9373
+        },
+        {
+          "kategori": "ekonomi",
+          "precision": 0.8914,
+          "recall": 0.8941,
+          "f1": 0.8927
+        },
+        {
+          "kategori": "teknologi",
+          "precision": 0.9296,
+          "recall": 0.8511,
+          "f1": 0.8886
+        },
+        {
+          "kategori": "politik",
+          "precision": 0.849,
+          "recall": 0.9148,
+          "f1": 0.8807
+        }
+      ],
+      "confusion_matrix": {
+        "keterangan": "baris=sebenarnya, kolom=prediksi",
+        "label": [
+          "hiburan",
+          "olahraga",
+          "teknologi",
+          "politik",
+          "ekonomi"
+        ],
+        "matriks": [
+          [
+            1279,
+            1,
+            39,
+            21,
+            16
+          ],
+          [
+            8,
+            1303,
+            0,
+            12,
+            1
+          ],
+          [
+            53,
+            2,
+            1069,
+            77,
+            55
+          ],
+          [
+            20,
+            2,
+            19,
+            1181,
+            69
+          ],
+          [
+            13,
+            1,
+            23,
+            100,
+            1157
+          ]
+        ]
+      }
+    },
+    "perbandingan": {
+      "selisih_accuracy": 0.0012,
+      "kesimpulan": "Selisih < 1%: akurasi TIDAK tergelembung oleh near-duplikat; angka DEDUP sah sebagai angka resmi (bebas-leakage)."
+    }
+  },
+  "interpretasi": {
+    "ringkasan": "Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.84% pada 6521 artikel uji (skenario DEDUP, bebas-leakage). Kategori 'olahraga' terklasifikasi paling baik (F1=0.9897), sedangkan 'politik' paling menantang (F1=0.8807). Kesalahan terbesar: berita 'ekonomi' ditebak 'politik' (100 artikel), yang masuk akal karena kedua topik sering beririsan.",
+    "kategori_terkuat": "olahraga",
+    "kategori_terlemah": "politik",
+    "paling_sering_salah": "ekonomi -> politik (100 artikel)"
+  }
+}
+
+=== 6. SIMPAN ===
+[1] File lokal : /data/analisis/ringkasan_analisis.json
+[2] HDFS     : hdfs://namenode:9000/proyek_bigdata/analisis/ringkasan_analisis.json
+[3] MongoDB  : proyek_bigdata.ringkasan_analisis  (1 dokumen)
+    Verifikasi: accuracy_dedup=0.9184, selisih=0.0012
+
+Selesai. Eksperimen RAW+DEDUP + JSON ringkasan analisis berhasil.

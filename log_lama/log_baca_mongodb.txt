@@ -1,0 +1,47 @@
+Terhubung ke MongoDB: mongodb://mongodb:27017 / db=proyek_bigdata
+Collections: ringkasan_analisis, berita_prediksi
+
+=== 1. RINGKASAN ANALISIS (collection: ringkasan_analisis) ===
+Judul proyek : Klasifikasi Berita Indonesia Menggunakan Naive Bayes pada Spark MLlib
+Dataset      : 33776 baris mentah, 33555 baris setelah dedup
+Accuracy RAW   : 0.9169  (F1 0.9170)
+Accuracy DEDUP : 0.9193  (F1 0.9194)  <- angka resmi
+
+Metrik per kategori (DEDUP):
+  kategori     precision   recall       f1
+  olahraga     0.9970      0.9872       0.9920
+  hiburan      0.9323      0.9412       0.9367
+  ekonomi      0.8829      0.8995       0.8911
+  teknologi    0.9233      0.8596       0.8903
+  politik      0.8620      0.9052       0.8831
+
+Interpretasi: Model Naive Bayes (multinomial) dengan fitur TF-IDF mencapai akurasi 91.93% pada 6521 artikel uji (skenario DEDUP, bebas-leakage). Kategori 'olahraga' terklasifikasi paling baik (F1=0.992), sedangkan 'politik' paling menantang (F1=0.8831). Kesalahan terbesar: berita 'ekonomi' ditebak 'politik' (89 artikel), yang masuk akal karena kedua topik sering beririsan.
+
+=== 2. PREDIKSI PER ARTIKEL (collection: berita_prediksi) ===
+Total dokumen : 6521
+Benar         : 5995
+Salah         : 526
+Akurasi (dihitung dari MongoDB): 0.9193
+
+=== 3. AGREGASI: DISTRIBUSI PER KATEGORI PREDIKSI ===
+  hiburan     : 1374
+  politik     : 1341
+  olahraga    : 1312
+  ekonomi     : 1307
+  teknologi   : 1187
+
+=== 4. AGREGASI: PASANGAN SALAH PREDIKSI TERBANYAK ===
+  ekonomi -> politik : 89 artikel
+  politik -> ekonomi : 77 artikel
+  teknologi -> politik : 67 artikel
+  teknologi -> ekonomi : 61 artikel
+  teknologi -> hiburan : 50 artikel
+
+=== 5. CONTOH 5 DOKUMEN SALAH PREDIKSI ===
+  {"id_artikel": 395840, "kategori": "teknologi", "kategori_prediksi": "ekonomi", "model": "Naive Bayes (multinomial)", "sumber": "Spark MLlib", "skenario": "dedup", "benar": false}
+  {"id_artikel": 402251, "kategori": "teknologi", "kategori_prediksi": "hiburan", "model": "Naive Bayes (multinomial)", "sumber": "Spark MLlib", "skenario": "dedup", "benar": false}
+  {"id_artikel": 444294, "kategori": "teknologi", "kategori_prediksi": "hiburan", "model": "Naive Bayes (multinomial)", "sumber": "Spark MLlib", "skenario": "dedup", "benar": false}
+  {"id_artikel": 506877, "kategori": "teknologi", "kategori_prediksi": "hiburan", "model": "Naive Bayes (multinomial)", "sumber": "Spark MLlib", "skenario": "dedup", "benar": false}
+  {"id_artikel": 514698, "kategori": "teknologi", "kategori_prediksi": "hiburan", "model": "Naive Bayes (multinomial)", "sumber": "Spark MLlib", "skenario": "dedup", "benar": false}
+
+Selesai. Semua data di atas dibaca langsung dari MongoDB (NoSQL).

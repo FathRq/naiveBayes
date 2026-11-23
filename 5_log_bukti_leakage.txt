@@ -1,0 +1,110 @@
+26/11/21 15:11:47 INFO SparkContext: Running Spark version 3.5.6
+26/11/21 15:11:47 INFO SparkContext: OS info Linux, 6.6.114.1-microsoft-standard-WSL2, amd64
+26/11/21 15:11:47 INFO SparkContext: Java version 11.0.27
+26/11/21 15:11:47 WARN NativeCodeLoader: Unable to load native-hadoop library for your platform... using builtin-java classes where applicable
+26/11/21 15:11:47 INFO ResourceUtils: ==============================================================
+26/11/21 15:11:47 INFO ResourceUtils: No custom resources configured for spark.driver.
+26/11/21 15:11:47 INFO ResourceUtils: ==============================================================
+26/11/21 15:11:47 INFO SparkContext: Submitted application: Bukti_Tidak_Leakage
+26/11/21 15:11:47 INFO ResourceProfile: Default ResourceProfile created, executor resources: Map(memory -> name: memory, amount: 1024, script: , vendor: , offHeap -> name: offHeap, amount: 0, script: , vendor: ), task resources: Map(cpus -> name: cpus, amount: 1.0)
+26/11/21 15:11:47 INFO ResourceProfile: Limiting resource is cpu
+26/11/21 15:11:47 INFO ResourceProfileManager: Added ResourceProfile id: 0
+26/11/21 15:11:47 INFO SecurityManager: Changing view acls to: spark
+26/11/21 15:11:47 INFO SecurityManager: Changing modify acls to: spark
+26/11/21 15:11:47 INFO SecurityManager: Changing view acls groups to: 
+26/11/21 15:11:47 INFO SecurityManager: Changing modify acls groups to: 
+26/11/21 15:11:47 INFO SecurityManager: SecurityManager: authentication disabled; ui acls disabled; users with view permissions: spark; groups with view permissions: EMPTY; users with modify permissions: spark; groups with modify permissions: EMPTY
+26/11/21 15:11:48 INFO Utils: Successfully started service 'sparkDriver' on port 44807.
+26/11/21 15:11:48 INFO SparkEnv: Registering MapOutputTracker
+26/11/21 15:11:48 INFO SparkEnv: Registering BlockManagerMaster
+26/11/21 15:11:48 INFO BlockManagerMasterEndpoint: Using org.apache.spark.storage.DefaultTopologyMapper for getting topology information
+26/11/21 15:11:48 INFO BlockManagerMasterEndpoint: BlockManagerMasterEndpoint up
+26/11/21 15:11:48 INFO SparkEnv: Registering BlockManagerMasterHeartbeat
+26/11/21 15:11:48 INFO DiskBlockManager: Created local directory at /tmp/blockmgr-f5100256-100b-434d-9a32-6b535ccb9aeb
+26/11/21 15:11:48 INFO MemoryStore: MemoryStore started with capacity 434.4 MiB
+26/11/21 15:11:48 INFO SparkEnv: Registering OutputCommitCoordinator
+26/11/21 15:11:48 INFO JettyUtils: Start Jetty 0.0.0.0:4040 for SparkUI
+26/11/21 15:11:48 INFO Utils: Successfully started service 'SparkUI' on port 4040.
+26/11/21 15:11:48 INFO StandaloneAppClient$ClientEndpoint: Connecting to master spark://spark-master:7077...
+26/11/21 15:11:48 INFO TransportClientFactory: Successfully created connection to spark-master/172.21.0.3:7077 after 21 ms (0 ms spent in bootstraps)
+26/11/21 15:11:48 INFO StandaloneSchedulerBackend: Connected to Spark cluster with app ID app-20261121151148-0008
+26/11/21 15:11:48 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151148-0008/0 on worker-20261121122026-172.21.0.6-37591 (172.21.0.6:37591) with 2 core(s)
+26/11/21 15:11:48 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151148-0008/0 on hostPort 172.21.0.6:37591 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:11:48 INFO StandaloneAppClient$ClientEndpoint: Executor added: app-20261121151148-0008/1 on worker-20261121122026-172.21.0.5-36211 (172.21.0.5:36211) with 2 core(s)
+26/11/21 15:11:48 INFO StandaloneSchedulerBackend: Granted executor ID app-20261121151148-0008/1 on hostPort 172.21.0.5:36211 with 2 core(s), 1024.0 MiB RAM
+26/11/21 15:11:48 INFO Utils: Successfully started service 'org.apache.spark.network.netty.NettyBlockTransferService' on port 39475.
+26/11/21 15:11:48 INFO NettyBlockTransferService: Server created on spark-master:39475
+26/11/21 15:11:48 INFO BlockManager: Using org.apache.spark.storage.RandomBlockReplicationPolicy for block replication policy
+26/11/21 15:11:48 INFO BlockManagerMaster: Registering BlockManager BlockManagerId(driver, spark-master, 39475, None)
+26/11/21 15:11:48 INFO BlockManagerMasterEndpoint: Registering block manager spark-master:39475 with 434.4 MiB RAM, BlockManagerId(driver, spark-master, 39475, None)
+26/11/21 15:11:48 INFO BlockManagerMaster: Registered BlockManager BlockManagerId(driver, spark-master, 39475, None)
+26/11/21 15:11:48 INFO BlockManager: Initialized BlockManager: BlockManagerId(driver, spark-master, 39475, None)
+26/11/21 15:11:48 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151148-0008/1 is now RUNNING
+26/11/21 15:11:48 INFO StandaloneAppClient$ClientEndpoint: Executor updated: app-20261121151148-0008/0 is now RUNNING
+26/11/21 15:11:48 INFO StandaloneSchedulerBackend: SchedulerBackend is ready for scheduling beginning after reached minRegisteredResourcesRatio: 0.0
+
+=== 1. MEMBACA DATA + BANGUN FITUR ===
+Jumlah baris : 33776
+Peta indeks -> kategori:
+  0 -> hiburan
+  1 -> olahraga
+  2 -> politik
+  3 -> teknologi
+  4 -> ekonomi
+
+=== 2. TRAIN + PREDIKSI (model demonstrasi) ===
+26/11/21 15:12:05 WARN DAGScheduler: Broadcasting large task binary with size 1646.4 KiB
+26/11/21 15:12:09 WARN DAGScheduler: Broadcasting large task binary with size 1633.4 KiB
+
+======================================================================
+BUKTI: APA SAJA YANG DILIHAT MODEL?
+======================================================================
+
+[1] Kolom yang MASUK ke model NaiveBayes:
+      - fitur : vektor TF-IDF (hanya ANGKA, dibuat dari teks)
+      - label : indeks kategori (kunci jawaban)
+      -> Kolom 'kategori' (string) TIDAK ada di vektor fitur.
+
+[2] 1 BARIS CONTOH - alur lengkap dari teks sampai prediksi:
+26/11/21 15:12:10 WARN DAGScheduler: Broadcasting large task binary with size 5.4 MiB
+
+  id_artikel : 4525309
+
+  (A) TEKS ASLI (teks_bersih, dipotong 120 karakter):
+        "apt rose blackpink menyamai rekor jungkook di tangga lagu billboard kolaborasi single apt rose blackpink dan bruno mars  ..."
+
+  (B) HASIL TOKENIZATION (20 kata pertama):
+        ['apt', 'rose', 'blackpink', 'menyamai', 'rekor', 'jungkook', 'di', 'tangga', 'lagu', 'billboard', 'kolaborasi', 'single', 'apt', 'rose', 'blackpink', 'dan', 'bruno', 'mars', 'tetap', 'menduduki']
+
+  (C) VEKTOR FITUR yang benar-benar dilihat model:
+        vektor SPARSE, 138 nilai non-nol (10 pertama):
+          indeks    436  ->  bobot TF-IDF 0.1111
+          indeks    674  ->  bobot TF-IDF 1.2796
+          indeks   1433  ->  bobot TF-IDF 4.9679
+          indeks   2081  ->  bobot TF-IDF 5.4647
+          indeks   2753  ->  bobot TF-IDF 10.9861
+          indeks   3142  ->  bobot TF-IDF 1.5493
+          indeks   4739  ->  bobot TF-IDF 2.5310
+          indeks   4956  ->  bobot TF-IDF 10.0678
+          indeks   5226  ->  bobot TF-IDF 2.1864
+          indeks   5734  ->  bobot TF-IDF 3.9429
+        ... semuanya ANGKA. Tidak ada string kategori di sini.
+
+  (D) LABEL / KUNCI JAWABAN:
+        indeks label = 0   ->   kategori = 'hiburan'
+
+  (E) PREDIKSI MODEL (ditebak HANYA dari vektor fitur):
+        indeks prediksi = 0   ->   kategori = 'hiburan'
+        BENAR? = True
+
+======================================================================
+KESIMPULAN
+======================================================================
+Model Naive Bayes HANYA melihat vektor ANGKA (TF-IDF) yang
+dihasilkan dari TEKS (judul + isi). Kolom 'kategori' hanya
+berfungsi sebagai LABEL (kunci jawaban) saat training & evaluasi.
+Kategori TIDAK pernah menjadi fitur  ->  TIDAK ADA data leakage.
+
+ANALOGI: belajar dari buku (soal + kunci jawaban), lalu ujian
+tanpa kunci. Skor ujian = akurasi. Kunci di buku tidak bocor
+ke jawabanmu - ia hanya dipakai mengoreksi setelah kamu menjawab.

@@ -1,0 +1,2 @@
+Found 1 items
+-rw-r--r--   2 root supergroup     82.6 M 2026-11-21 15:04 /proyek_bigdata/raw/dataset.csv
